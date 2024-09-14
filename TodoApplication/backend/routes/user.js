@@ -1,119 +1,129 @@
+const { Router } = require("express");
+const User = require("../db");
+const userauth = require("../middlewire/userauthentication");
+const router = Router();
+const jwt = require("jsonwebtoken");
+const { createTodo, updateTodo } = require("../utils");
+const jwtkey = "fuckoffhacker";
 
-const {Router}=require("express");
-const User=require('../db')
-const userauth=require("../middlewire/userauthentication")
-const router=Router();
+router.post("/signup", async function (req, res) {
+  const { username, password } = req.body;
 
-const {createTodo , updateTodo}=require('../utils');
-
-
-
-router.post("/signup",async function(req,res){
-    // create a new user
-
-    const {username,password}=req.body;
-
-    try{
-        const user=await User.findOne({username,password});
-        if(user){
-           return res.status(411).json({msg:"User already exist"});
-        }
-        const newuser=await User.create({
-            username:username,
-            password:password,
-            todos:[]
-        });
-        res.json({msg:"New user created successfully",newuser})
-    }catch(err){
-        console.log(err);
-        res.json({msg:"internal server error"});
+  try {
+    const user = await User.findOne({ username, password });
+    if (user) {
+      return res.status(411).json({ msg: "User already exist" });
     }
-})
-router.get("/todos",async function(req,res){
-        const {username,password}=req.body;
-
-        try{
-            const user=await User.findOne({username,password});
-            if(!user){
-                return res.send(400).json({msg:"User does not exist"});
-               
-            }
-            const todos=user.todos;
-           
-            return res.send(200).json({msg:"Data fetch successfully",todos});
-        }catch(err){
-            console.log(err);
-            res.json({msg:"Error in fetching the data"});
-        }
-})
-
-router.post("/todo",userauth,async function(req,res){
-
-    const {username,password,title,description,completed}=req.body;
-
-    const newtodo=createTodo.safeParse({
-        title,
-        description,
-        completed
+    const newuser = await User.create({
+      username: username,
+      password: password,
+      todos: [],
     });
-    if(!newtodo.success){
-       return  res.status(411).json({msg:"not valid todo"})
-       
+
+    const token = jwt.sign({ username }, jwtkey);
+
+    res.json({ msg: "New user created successfully", token });
+  } catch (err) {
+    console.log(err);
+    res.json({ msg: "internal server error" });
+  }
+});
+router.post("/signin", async (req, res) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({ username, password });
+
+  if (!user) {
+    return res.status(401).json({ msg: "Chala ja bhosdikae" });
+  }
+  const userId = user._id;
+  const token = jwt.sign({ userId }, jwtkey);
+  console.log(token);
+  return res.json({ token, userId });
+});
+router.get("/todos", async function (req, res) {
+  const { username, password } = req.headers;
+  // console.log(`Username= ${username} and password= ${password}`);
+
+  try {
+    const user = await User.findOne({ username, password });
+    if (!user) {
+      return res.status(400).json({ msg: "User does not exist" });
     }
-    // /sava int the database
-   try{
-        const user=await User.findOne({username,password});
-        if(!user){
-            return res.status(410).json({msg:"No user found"});
-        }
-        user.todos.push({title,description,completed});
-        await user.save();
-        return res.status(200).json({msg:"Todo update succesfully"});
-       
+    const todos = user.todos;
 
-   }catch(err){
+    return res.status(200).json({ msg: "Data fetch successfully", todos });
+  } catch (err) {
+    console.log(err);
+    return res.json({ msg: "Error in fetching the data" });
+  }
+});
 
-       return res.status(400).json({msg:"Internal server error in todo",err});
-   }
-    
+router.post("/todo", userauth, async function (req, res) {
+  const { title, description, completed } = req.body;
+  const id = req.userId;
+  console.log(id);
 
-})    
+  const newtodo = createTodo.safeParse({
+    title,
+    description,
+    completed,
+  });
+  if (!newtodo.success) {
+    return res.status(411).json({ msg: "not valid todo" });
+  }
 
 
-
-router.put("/completed/:id",userauth,async function(req,res){
-
-    const {id}=req.params;
-    // ye to simple hai yek todo ki id milegai usko delete parna hai bass
-    const {username,password}=req.body;
-
-    const response=updateTodo.safeParse({id});
-    if(!response.success){
-        return res.send(411).json({msg:"You send the wrong id"})
+  //   const user = req.UserId; //ise ham us nam ka uiser nikallete hai authertication me se
+  const user1 = await User.findByIdAndUpdate(
+    {
+      _id: id,
+    },
+    {
+      "$push": {
+        todos: {
+          title,
+          description,
+          completed,
+        },
+      },
     }
+  ); //matlab user nam ka koi user nikalet hei db me se or fir uske todo me data dalte hai
 
-    try{
-        
-        const user=await User.findOne({username,password});
-        if(!user){
-            return res.status(404).json({msg:"User not found"});
-        }
-        const todo=user.todos.id(id);
-        if(!todo){
-            return res.status(404).json({msg:"Todo not found"});
-        }
-        todo.completed=true;
-        await user.save();
-        
-        return res.status(200).json({msg:"Task completed"});
+  return res.status(200).json({ msg: "Todos updated succesfull" });
+});
 
-    }catch(err){
-        console.log(err);
-        return res.status(411).json({msg:"Internal server error"});
+router.put("/completed/:id", userauth, async function (req, res) {
+  const { id } = req.params;
+  // ye to simple hai yek todo ki id milegai usko delete parna hai bass
+  const { username, password } = req.headers;
+
+  const response = updateTodo.safeParse({ id });
+  if (!response.success) {
+    return res.send(411).json({ msg: "You send the wrong id" });
+  }
+
+  try {
+    const user = await User.findOne({ username, password });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
     }
+    const todo = user.todos.id(id);
+    if (!todo) {
+      return res.status(404).json({ msg: "Todo not found" });
+    }
+    todo.completed = true;
+    await user.save();
 
+    // or we can do that
+    // await user.todos.updateById(id,{
+    //     completed:true
+    // })
 
-})
+    return res.status(200).json({ msg: "Task completed" });
+  } catch (err) {
+    console.log(err);
+    return res.status(411).json({ msg: "Internal server error" });
+  }
+});
 
-
-module.exports=router;
+module.exports = router;
