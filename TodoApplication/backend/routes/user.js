@@ -22,10 +22,10 @@ router.post("/signup", async function (req, res) {
 
     const token = jwt.sign({ username }, jwtkey);
 
-    res.json({ msg: "New user created successfully", token });
+    res.json({ token });
   } catch (err) {
     console.log(err);
-    res.json({ msg: "internal server error" });
+    res.status(411).json({ msg: "internal server error" });
   }
 });
 router.post("/signin", async (req, res) => {
@@ -36,16 +36,17 @@ router.post("/signin", async (req, res) => {
     return res.status(401).json({ msg: "Chala ja bhosdikae" });
   }
   const userId = user._id;
+  // console.log(userId)
   const token = jwt.sign({ userId }, jwtkey);
   console.log(token);
-  return res.json({ token, userId });
+  return res.json({ token });
 });
-router.get("/todos", async function (req, res) {
-  const { username, password } = req.headers;
+router.get("/todos", userauth, async function (req, res) {
+  const id = req.userId;
   // console.log(`Username= ${username} and password= ${password}`);
-
+  console.log(`the user id in the get route is ${id}`);
   try {
-    const user = await User.findOne({ username, password });
+    const user = await User.findById({ _id: id });
     if (!user) {
       return res.status(400).json({ msg: "User does not exist" });
     }
@@ -61,7 +62,7 @@ router.get("/todos", async function (req, res) {
 router.post("/todo", userauth, async function (req, res) {
   const { title, description, completed } = req.body;
   const id = req.userId;
-  console.log(id);
+  console.log(`id is ${id}`);
 
   const newtodo = createTodo.safeParse({
     title,
@@ -72,14 +73,13 @@ router.post("/todo", userauth, async function (req, res) {
     return res.status(411).json({ msg: "not valid todo" });
   }
 
-
   //   const user = req.UserId; //ise ham us nam ka uiser nikallete hai authertication me se
   const user1 = await User.findByIdAndUpdate(
     {
       _id: id,
     },
     {
-      "$push": {
+      $push: {
         todos: {
           title,
           description,
@@ -93,9 +93,13 @@ router.post("/todo", userauth, async function (req, res) {
 });
 
 router.put("/completed/:id", userauth, async function (req, res) {
-  const { id } = req.params;
   // ye to simple hai yek todo ki id milegai usko delete parna hai bass
-  const { username, password } = req.headers;
+  const id = req.userId; //ye hai user ki id
+  // ab hmako particular todo ko nikalna hai
+  const todo = req.params.id; //ye hai perticular todo ki id
+  // ab hamko id nam ke user ka todo id wala object me completed true mark karna hai
+  console.log(`User id is ${id}`);
+  console.log(`todo id is ${todo}`);
 
   const response = updateTodo.safeParse({ id });
   if (!response.success) {
@@ -103,15 +107,17 @@ router.put("/completed/:id", userauth, async function (req, res) {
   }
 
   try {
-    const user = await User.findOne({ username, password });
+    const user = await User.findOne({
+      _id: id,
+    });
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-    const todo = user.todos.id(id);
-    if (!todo) {
+    const particulartodo = user.todos.id(todo);
+    if (!particulartodo) {
       return res.status(404).json({ msg: "Todo not found" });
     }
-    todo.completed = true;
+    particulartodo.completed = true;
     await user.save();
 
     // or we can do that

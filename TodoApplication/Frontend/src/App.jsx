@@ -4,9 +4,11 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { CreateTodo } from './components/Createtodo'
 import { Todos } from './components/Todos'
-import { Signinform } from './components/signin'
+import { Loginform } from './components/signin'
+import { Signup } from './components/signup'
+
 function App() {
-  const [todos,setTodos]=useState([]);
+  // const [todos,setTodos]=useState([]);
 // useEffect(()=>{
 //   fetch("http://localhost:3000/user/todos",{
 //     method:'GET',
@@ -33,10 +35,10 @@ function App() {
   return (
     
       <div>
-        Hello i am nitish
-        <Signinform />
-        <CreateTodo/>
-        <Todos todos={todos}></Todos>
+        <Signup />
+        <br />
+        <Loginform />
+       
     </div>
   )
 }
