@@ -20,10 +20,23 @@ export function CreateTodo(){
         <button  style={{
             padding:10,
             margin:10
-        }} onClick={()=>{
+        }} onClick={async()=>{
+            console.log(localStorage.getItem('Token'));
+            const token=localStorage.getItem('Token');
+            await fetch("http://localhost:3000/user/todo",{
+                method:'POST',
+                headers:{
+                    'authorization':token,
+                    'Content-Type': 'application/json' 
+                },
+                body:JSON.stringify({
+                    title:title,
+                    description:description
+                })
+            })
         
             
         }}> Add a todo</button>
 
     </div>
-}
+}4

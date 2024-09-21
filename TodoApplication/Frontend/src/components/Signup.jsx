@@ -20,7 +20,7 @@ export  const Signup = () => {
         localStorage.setItem("token", data.token);
         alert("Sign-up successfull");
       } else {
-        alert("Error in signup");
+        alert(`Error in sign up ${data.msg}`);
       }
     } catch (err) {
       console.log("Error in generating token");

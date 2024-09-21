@@ -1,15 +1,19 @@
 const User=require('../db');
-const jwtkey="fuckoffhacker"
+const jwtkey = "fuckoffhacker";
 const jwt=require("jsonwebtoken");
 
 const userauth=async function(req,res,next){
-    const token=req.headers['authorization']?.split(' ')[1];
-    if(token){
-        const decode=jwt.verify(token,jwtkey)
-        console.log(`decoded message is ${decode}`);
+    const token=req.headers.authorization;
+    console.log(`token in the middle wire is ${token}`);
+    if(!token){
+        return res.status(401).json({msg:"Token not provided"});
+    }
+    
+    try{
+        const decode=jwt.verify(token,jwtkey); //ise user ki id nikal jayega jo ham req.userID me kar ke pass kar denge taki dusara middlewire usko use kar sake
+        console.log(`decoded message is ${JSON.stringify(decode)}`);
         const username=decode.userId;
 
-    try{
         
         const userexist=await User.findOne({
             _id:username
@@ -25,9 +29,9 @@ const userauth=async function(req,res,next){
         return res.status(500).json({msg:"Internal server error in middlewire"});
    }
 
-    }
+    };
 
 
-}
+
 
 module.exports=userauth;

@@ -43,7 +43,7 @@ router.post("/signin", async (req, res) => {
 });
 router.get("/todos", userauth, async function (req, res) {
   const id = req.userId;
-  // console.log(`Username= ${username} and password= ${password}`);
+  
   console.log(`the user id in the get route is ${id}`);
   try {
     const user = await User.findById({ _id: id });
@@ -92,19 +92,15 @@ router.post("/todo", userauth, async function (req, res) {
   return res.status(200).json({ msg: "Todos updated succesfull" });
 });
 
-router.put("/completed/:id", userauth, async function (req, res) {
+router.put("/completed", userauth, async function (req, res) {
   // ye to simple hai yek todo ki id milegai usko delete parna hai bass
   const id = req.userId; //ye hai user ki id
   // ab hmako particular todo ko nikalna hai
-  const todo = req.params.id; //ye hai perticular todo ki id
+  const todo = req.body.id; //ye hai perticular todo ki id
   // ab hamko id nam ke user ka todo id wala object me completed true mark karna hai
-  console.log(`User id is ${id}`);
-  console.log(`todo id is ${todo}`);
-
-  const response = updateTodo.safeParse({ id });
-  if (!response.success) {
-    return res.send(411).json({ msg: "You send the wrong id" });
-  }
+ console.log(`Todo id is ${todo}`)
+ console.log(`user id is ${id}`)
+ 
 
   try {
     const user = await User.findOne({

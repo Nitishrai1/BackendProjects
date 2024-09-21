@@ -15,11 +15,12 @@ export const Loginform = () => {
         },
         body: JSON.stringify({ username, password }),
       });
-      const data = await response.json(); //isme se token nikal lege ham log
+      const res = await response.json(); //isme se token nikal lege ham log
       if (response.ok) {
-        localStorage.setItem("Token", data.token);
-        console.log("User create succesfully");
+        localStorage.setItem("Token", res.token);
+      alert(`Logged in successfull`)
       } else {
+        
         console.log(data.msg);
       }
     } catch (err) {
