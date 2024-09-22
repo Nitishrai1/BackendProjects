@@ -2,39 +2,44 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { useEffect } from "react";
 
-
-function Navbar(){
-  return <div >
-   
-      
-     <ul style={{display:"flex", justifyContent:"space-around", alignItems:"center"  }}>
-      <li>Home</li>
-      <li>About</li>
-      <li>service</li>
-      <li>Contact</li>
-     </ul>
-    </div>
-
-
-}
-
-function CardWrapper({children }){
-  // yaha par main logic lagega
-
-  return (
-    <div style={{backgroundColor:"lightgray" , border:2, padding:5}}>
-      {children }
-      </div>
-  )
-}
 function App() {
+  const [exchange1Data,setData1]=useState({});
+  const [exchange2Data,setData2]=useState({});
+  const [bankData,setBankdata]=useState({});
+
+  useEffect(()=>{
+    setData1({
+      result:100
+    });
+  },[])
+
+
+  useEffect(()=>{
+    setData2({
+      result:100
+    });
+  },[])
+  
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setBankdata({
+        bankData:200
+      },5000);
+    })
+  },[])
+  console.log(`This is before the crypto`);
+  const cryptoreturns=exchange1Data.result+exchange2Data.result;
+  console.log(`This is after the crypto`);
+
+  const incometake=(cryptoreturns+bankData.bankData)*0.3;
+  
+  
   
   return <>
-  <CardWrapper>
-    <Navbar/>
-  </CardWrapper>
-
+    hi there the income tax is {incometake};
   </>
 }
 
