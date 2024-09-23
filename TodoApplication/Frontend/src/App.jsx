@@ -49,7 +49,7 @@ function App() {
         <CreateTodo />
         <br />
         <button onClick={fetchdata}> Click Me</button>
-        <Todos todos={todos}></Todos>
+        <Todos todos={todos} setTodos={setTodos} />
        
     </div>
   )

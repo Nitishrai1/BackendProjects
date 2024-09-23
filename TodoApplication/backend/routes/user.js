@@ -52,7 +52,13 @@ router.get("/todos", userauth, async function (req, res) {
     }
     const todos = user.todos;
 
-    return res.status(200).json({ msg: "Data fetch successfully", todos });
+    const finaltodo = []; 
+    todos.forEach((todo) => {
+      if (todo.completed === false) {
+        finaltodo.push(todo); 
+      }
+    });
+    return res.json({msg:"Todo fetched succesfully ",todos:finaltodo})
   } catch (err) {
     console.log(err);
     return res.json({ msg: "Error in fetching the data" });
@@ -83,7 +89,7 @@ router.post("/todo", userauth, async function (req, res) {
         todos: {
           title,
           description,
-          completed,
+          completed:false,
         },
       },
     }
