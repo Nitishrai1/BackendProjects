@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Scheduler Simulation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .box {
+            border: 2px solid #000;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            background-color: #f8f9fa;
+            margin-bottom: 20px;
+        }
+        .simulation-box {
+            border: 2px solid #000;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            background-color: #f8f9fa;
+            padding: 15px;
+            height: 300px;
+            overflow: auto;
+        }
+        .process {
+            width: 100px;
+            height: 30px;
+            margin: 5px;
+            display: inline-block;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">OS Scheduler Simulation</h1>
+    
+    <!-- Input Box -->
+    <div class="box p-4">
+        <h2>Input Processes</h2>
+        <form id="processForm">
+            <div class="form-group">
+                <label for="numProcesses">Number of Processes:</label>
+                <input type="number" class="form-control" id="numProcesses" min="1" required>
+            </div>
+            <div id="processInputs"></div>
+            <button type="button" class="btn btn-primary" onclick="generateProcessInputs()">Generate Inputs</button>
+            <button type="submit" class="btn btn-success">Simulate</button>
+        </form>
+    </div>
+    
+  
+    <div class="row">
+        <div class="col-md-12">
+            <div class="simulation-box" id="sjfSimulationBox">
+                <h2>Shortest Job First (SJF) Simulation</h2>
+                <div id="sjfAnimation"></div>
+            </div>
+        </div>
+    </div>
+
+ 
+    <div class="box p-4 mt-4">
+        <h2>Results</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Process</th>
+                    <th>Arrival Time</th>
+                    <th>Burst Time</th>
+                    <th>Completion Time</th>
+                    <th>Turnaround Time</th>
+                    <th>Waiting Time</th>
+                </tr>
+            </thead>
+            <tbody id="resultsTableBody">
+                <!-- Results will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function generateProcessInputs() {
+        const numProcesses = document.getElementById('numProcesses').value;
+        const processInputs = document.getElementById('processInputs');
+        processInputs.innerHTML = '';
+        for (let i = 0; i < numProcesses; i++) {
+            processInputs.innerHTML += `
+                <div class="form-group">
+                    <label>Process ${i + 1} Arrival Time:</label>
+                    <input type="number" class="form-control" name="arrivalTime" min="0" required>
+                    <label>Process ${i + 1} Burst Time:</label>
+                    <input type="number" class="form-control" name="burstTime" min="1" required>
+                </div>
+            `;
+        }
+    }
+
+    document.getElementById('processForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const arrivalTimes = Array.from(document.getElementsByName('arrivalTime')).map(input => parseInt(input.value));
+        const burstTimes = Array.from(document.getElementsByName('burstTime')).map(input => parseInt(input.value));
+        const processes = arrivalTimes.map((arrival, index) => ({
+            id: index + 1,
+            arrival,
+            burst: burstTimes[index],
+            remainingBurst: burstTimes[index],
+            completion: 0,
+            turnaround: 0,
+            waiting: 0
+        }));
+        processes.sort((a, b) => a.arrival - b.arrival);
+
+        runSJFScheduling(processes);
+    });
+
+    function runSJFScheduling(processes) {
+        const animationContainer = document.getElementById('sjfAnimation');
+        const resultsTableBody = document.getElementById('resultsTableBody');
+        animationContainer.innerHTML = '';
+        resultsTableBody.innerHTML = '';
+
+        let currentTime = 0;
+        let completed = 0;
+        const n = processes.length;
+
+        while (completed < n) {
+            const readyQueue = processes.filter(p => p.arrival <= currentTime && p.remainingBurst > 0);
+            if (readyQueue.length > 0) {
+                readyQueue.sort((a, b) => a.remainingBurst - b.remainingBurst);
+                const currentProcess = readyQueue[0];
+
+                const processElement = document.createElement('div');
+                processElement.className = 'process bg-primary';
+                processElement.innerText = `P${currentProcess.id}`;
+                animationContainer.appendChild(processElement);
+
+                currentProcess.remainingBurst--;
+                currentTime++;
+
+                if (currentProcess.remainingBurst === 0) {
+                    currentProcess.completion = currentTime;
+                    currentProcess.turnaround = currentProcess.completion - currentProcess.arrival;
+                    currentProcess.waiting = currentProcess.turnaround - currentProcess.burst;
+                    completed++;
+
+                    resultsTableBody.innerHTML += `
+                        <tr>
+                            <td>P${currentProcess.id}</td>
+                            <td>${currentProcess.arrival}</td>
+                            <td>${currentProcess.burst}</td>
+                            <td>${currentProcess.completion}</td>
+                            <td>${currentProcess.turnaround}</td>
+                            <td>${currentProcess.waiting}</td>
+                        </tr>
+                    `;
+                }
+
+                setTimeout(() => {
+                    processElement.style.backgroundColor = '#28a745';
+                }, 1000);
+            } else {
+                currentTime++;
+            }
+        }
+    }
+</script>
+</body>
+</html>
