@@ -116,10 +116,14 @@ router.put("/completed", userauth, async function (req, res) {
       return res.status(404).json({ msg: "User not found" });
     }
     const particulartodo = user.todos.id(todo);
+    
     if (!particulartodo) {
       return res.status(404).json({ msg: "Todo not found" });
     }
+   
+
     particulartodo.completed = true;
+
     await user.save();
 
     // or we can do that

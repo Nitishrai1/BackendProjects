@@ -1,0 +1,4 @@
+React se pahle jab ham log routing implement karte the tab ham log hard reload karte the mtlab pura index.html file with its javascript files pura ata tha react ke madaab se wo re resload hata diye hai react helps to create a single page application means there is a single hard reload usi me sab a jata hai bar bar hard reaload nahi karna padta hai
+
+
+React-router-dom : is used to do routing in react 

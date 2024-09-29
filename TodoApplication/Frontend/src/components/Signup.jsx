@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export  const Signup = () => {
   const [username, setUsername] = useState("");
@@ -23,7 +23,7 @@ export  const Signup = () => {
         alert(`Error in sign up ${data.msg}`);
       }
     } catch (err) {
-      console.log("Error in generating token");
+      console.log("Error in generating token",err);
     }
   };
 
