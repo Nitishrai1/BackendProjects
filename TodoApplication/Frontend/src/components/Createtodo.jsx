@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export function CreateTodo(){
+export default function CreateTodo(){
     const [title,setTitle]=useState("");
     const [description,setDescription]=useState("");
     return  <div>
@@ -23,7 +23,7 @@ export function CreateTodo(){
         }} onClick={async()=>{
             console.log(localStorage.getItem('Token'));
             const token=localStorage.getItem('Token');
-            await fetch("http://localhost:3000/user/todo",{
+           const response= await fetch("http://localhost:3000/user/todo",{
                 method:'POST',
                 headers:{
                     'authorization':token,
@@ -34,7 +34,8 @@ export function CreateTodo(){
                     description:description
                 })
             })
-        
+            const data=await response.json();
+            alert(`The backend response is ${data.msg}`)
             
         }}> Add a todo</button>
 

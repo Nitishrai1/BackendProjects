@@ -1,59 +1,71 @@
-import { useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import "./App.css";
-import { CreateTodo } from "./components/Createtodo";
-import { Todos } from "./components/Todos";
-import { Loginform } from "./components/signin";
-import { Signup } from "./components/signup";
-import { BrowserRouter, Routes,Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+const CreateTodo = lazy(() => import("./components/Createtodo"));
+const Todos = lazy(() => import("./components/Todos"));
+const Loginform = lazy(() => import("./components/signin"));
+const Signup = lazy(() => import("./components/signup"));
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+// lazy loding is used to give the page to the user which the user wants not that page which user does not want which will effectevly reduse the fettching the the whole data from backend
 
 function App() {
-  const [todos, setTodos] = useState([]);
 
-  const fetchdata = async () => {
-    const token = localStorage.getItem("Token");
-    console.log(`token in localstorage is ${token}`);
-    try {
-      const response = await fetch("http://localhost:3000/user/todos", {
-        method: "GET",
-        headers: {
-          "content-Type": "application/json",
-          authorization: `${token}`,
-        },
-      });
-      const res = await response.json([]);
-      if (response.ok) {
-        console.log(`Data fetched from data base succesull`);
-        setTodos(res.todos);
-      } else {
-        console.log(`Error in fetching the data`);
-      }
-    } catch (err) {
-      console.log(`Error occured ${err}`);
-    }
-  };
-  useEffect(() => {
-    fetchdata();
-  }, []);
   return (
-  
-      /* <Signup />
-        <br />
-        <Loginform />
-        <br />
-        <CreateTodo />
-        <br />
-        <button onClick={fetchdata}> Click Me</button>
-        <Todos todos={todos} setTodos={setTodos} /> */
+    <div>
+      <div style={{ background: "black", color: "white" }}>
+        Welcome to my Todo app
+      </div>
+
       <BrowserRouter>
+        <Appbar />
         <Routes>
-          <Route path="/signup" element={<Signup />} / >
-          <Route path="/login" element={<Loginform />} / >
-          <Route path="/todos" element={<Todos todos={todos} setTodos={setTodos}/>} / >
-          <Route path="/createtodo" element={<CreateTodo />} / >
+          <Route
+            path="/signup"
+            element={
+              <Suspense fallback={"Loding..."}>
+                <Signup />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <Suspense fallback={"Loding..."}>
+                <Loginform />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/todos"
+            element={<Todos/>}
+          />
+          <Route path="/createtodo" element={<CreateTodo />} />
         </Routes>
       </BrowserRouter>
-    
+    </div>
   );
+  function Appbar() {
+    const navigate = useNavigate(); //ye usehook help karta hai bina backend ko fetch kiye rote change karne me kiu ki ye component me use hota hai hai is liye isko browser componente me rakhna padta hai bahar nahi
+    return (
+      <div>
+        <button
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          {" "}
+          Sigin Up
+        </button>
+        <button
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
+          Login
+        </button>
+      </div>
+    );
+  }
 }
 
 export default App;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Loginform = () => {
+export default function Loginform () {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,7 +21,7 @@ export const Loginform = () => {
       alert(`Logged in successfull`)
       } else {
         
-        console.log(data.msg);
+        console.log("sigin Successfull");
       }
     } catch (err) {
       console.log("Error occured", err);
