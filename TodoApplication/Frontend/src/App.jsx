@@ -9,6 +9,14 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 // lazy loding is used to give the page to the user which the user wants not that page which user does not want which will effectevly reduse the fettching the the whole data from backend
 
 function App() {
+  const [isAuthenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    if (token) {
+      setAuthenticated(true);
+    }
+  }, []);
 
   return (
     <div>
@@ -17,7 +25,7 @@ function App() {
       </div>
 
       <BrowserRouter>
-        <Appbar />
+        <Appbar isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>
         <Routes>
           <Route
             path="/signup"
@@ -31,39 +39,59 @@ function App() {
             path="/login"
             element={
               <Suspense fallback={"Loding..."}>
-                <Loginform />
+                <Loginform setAuthenticated={setAuthenticated} />
               </Suspense>
             }
           />
           <Route
             path="/todos"
-            element={<Todos/>}
+            element={
+              isAuthenticated ? (
+                <Suspense fallback={"Loding..."}>
+                  <Todos />
+                </Suspense>
+              ) : (
+                <Suspense fallback={"Loding..."}>
+                  <Loginform setAuthstatus={setAuthenticated} />
+                </Suspense>
+              )
+            }
           />
           <Route path="/createtodo" element={<CreateTodo />} />
         </Routes>
       </BrowserRouter>
     </div>
   );
-  function Appbar() {
+  function Appbar({isAuthenticated,setAuthenticated}) {
     const navigate = useNavigate(); //ye usehook help karta hai bina backend ko fetch kiye rote change karne me kiu ki ye component me use hota hai hai is liye isko browser componente me rakhna padta hai bahar nahi
+   const  handleLogout=()=>{
+      localStorage.removeItem("Token");
+      setAuthenticated(false);
+      navigate("/login"); 
+    }
     return (
       <div>
-        <button
-          onClick={() => {
-            navigate("/signup");
-          }}
-        >
-          {" "}
-          Sigin Up
-        </button>
-        <button
-          onClick={() => {
-            navigate("/login");
-          }}
-        >
-          Login
-        </button>
-      </div>
+      {isAuthenticated ? ( // Use curly braces for conditional rendering
+        <button onClick={handleLogout}>Log out</button>
+      ) : (
+        <>
+          <button
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            Sign Up {/* Corrected spelling from "Sigin Up" to "Sign Up" */}
+          </button>
+          <button
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            Login
+          </button>
+        </>
+      )}
+    </div>
     );
   }
 }

@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Loginform () {
+export default function Loginform ({setAuthenticated}) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); 
 
   const authenticate = async (e) => {
     e.preventDefault();
@@ -11,17 +13,20 @@ export default function Loginform () {
       const response = await fetch("http://localhost:3000/user/signin", {
         method: "POST",
         headers: {
-          "content-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
       });
       const res = await response.json(); //isme se token nikal lege ham log
       if (response.ok) {
         localStorage.setItem("Token", res.token);
-      alert(`Logged in successfull`)
+        setAuthenticated(true);
+        alert(`Logged in successfull`)
+        navigate("/todos")
+        
       } else {
         
-        console.log("sigin Successfull");
+        console.log("sigin failed");
       }
     } catch (err) {
       console.log("Error occured", err);
