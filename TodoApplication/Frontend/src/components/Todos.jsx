@@ -11,7 +11,7 @@ export default function Todos() {
       const response = await fetch("http://localhost:3000/user/todos", {
         method: "GET",
         headers: {
-          "content-Type": "application/json",
+          "Content-Type": "application/json",
           authorization: `${token}`,
         },
       });

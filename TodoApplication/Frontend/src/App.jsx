@@ -1,22 +1,52 @@
 import { React, useEffect, useState } from "react";
 import "./App.css";
 import { lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+
+// Lazy loading components
 const CreateTodo = lazy(() => import("./components/Createtodo"));
 const Todos = lazy(() => import("./components/Todos"));
 const Loginform = lazy(() => import("./components/signin"));
 const Signup = lazy(() => import("./components/signup"));
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-// lazy loding is used to give the page to the user which the user wants not that page which user does not want which will effectevly reduse the fettching the the whole data from backend
 
 function App() {
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isAuthenticated, setAuthenticated] = useState(null);
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("Token");
     if (token) {
       setAuthenticated(true);
+      fetchTodos(token); // Fetch todos if user is authenticated
+    } else {
+      setAuthenticated(false);
     }
   }, []);
+
+  const fetchTodos = async (token) => {
+    try {
+      const response = await fetch("http://localhost:3000/user/todos", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Use "Bearer" for token in header
+        },
+      });
+      const res = await response.json();
+      if (response.ok) {
+        console.log("Data fetched from database successfully");
+        setTodos(res.todos); // Update todos state with the fetched todos
+      } else {
+        console.log("Error in fetching the data");
+      }
+    } catch (err) {
+      console.log(`Error occurred: ${err}`);
+    }
+  };
+
+  if (isAuthenticated == null) {
+    return <div>Loading authentication status...</div>;
+  }
 
   return (
     <div>
@@ -25,12 +55,12 @@ function App() {
       </div>
 
       <BrowserRouter>
-        <Appbar isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>
+        <Appbar isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} />
         <Routes>
           <Route
             path="/signup"
             element={
-              <Suspense fallback={"Loding..."}>
+              <Suspense fallback={"Loading..."}>
                 <Signup />
               </Suspense>
             }
@@ -38,7 +68,7 @@ function App() {
           <Route
             path="/login"
             element={
-              <Suspense fallback={"Loding..."}>
+              <Suspense fallback={"Loading..."}>
                 <Loginform setAuthenticated={setAuthenticated} />
               </Suspense>
             }
@@ -47,53 +77,57 @@ function App() {
             path="/todos"
             element={
               isAuthenticated ? (
-                <Suspense fallback={"Loding..."}>
-                  <Todos />
+                <Suspense fallback={"Loading..."}>
+                  <Todos todos={todos} /> {/* Pass todos as props */}
                 </Suspense>
               ) : (
-                <Suspense fallback={"Loding..."}>
-                  <Loginform setAuthstatus={setAuthenticated} />
+                <Suspense fallback={"Loading..."}>
+                  <Loginform setAuthenticated={setAuthenticated} />
                 </Suspense>
               )
             }
           />
-          <Route path="/createtodo" element={<CreateTodo />} />
+          <Route
+            path="/createtodo"
+            element={
+              isAuthenticated ? (
+                <Suspense fallback={"Loading..."}>
+                  <CreateTodo />
+                </Suspense>
+              ) : (
+                <Suspense fallback={"Loading..."}>
+                  <Loginform setAuthenticated={setAuthenticated} />
+                </Suspense>
+              )
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
   );
-  function Appbar({isAuthenticated,setAuthenticated}) {
-    const navigate = useNavigate(); //ye usehook help karta hai bina backend ko fetch kiye rote change karne me kiu ki ye component me use hota hai hai is liye isko browser componente me rakhna padta hai bahar nahi
-   const  handleLogout=()=>{
-      localStorage.removeItem("Token");
-      setAuthenticated(false);
-      navigate("/login"); 
-    }
-    return (
-      <div>
-      {isAuthenticated ? ( // Use curly braces for conditional rendering
+}
+
+function Appbar({ isAuthenticated, setAuthenticated }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("Token");
+    setAuthenticated(false);
+    navigate("/login");
+  };
+
+  return (
+    <div>
+      {isAuthenticated ? (
         <button onClick={handleLogout}>Log out</button>
       ) : (
         <>
-          <button
-            onClick={() => {
-              navigate("/signup");
-            }}
-          >
-            Sign Up {/* Corrected spelling from "Sigin Up" to "Sign Up" */}
-          </button>
-          <button
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            Login
-          </button>
+          <button onClick={() => navigate("/signup")}>Sign Up</button>
+          <button onClick={() => navigate("/login")}>Login</button>
         </>
       )}
     </div>
-    );
-  }
+  );
 }
 
 export default App;
