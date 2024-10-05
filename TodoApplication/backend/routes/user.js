@@ -64,6 +64,21 @@ router.get("/todos", userauth, async function (req, res) {
     return res.json({ msg: "Error in fetching the data" });
   }
 });
+router.get("/alltodos",userauth,async function(req,res){
+  const id=req.userId;
+  try{
+    const user=await User.findById({_id:id});
+    if(!user){
+      return res.status(400).json({msg:"User does not exist"});
+    }
+    const todos=user.todos;
+    console.log(todos);
+    return res.json({msg:"All todo fetched successfull",todos:todos})
+  }catch(err){
+    console.log("Error occured in fetching the all todos from the mongodb")
+  }
+
+});
 
 router.post("/todo", userauth, async function (req, res) {
   const { title, description, completed } = req.body;
@@ -76,7 +91,7 @@ router.post("/todo", userauth, async function (req, res) {
     completed,
   });
   if (!newtodo.success) {
-    return res.status(411).json({ msg: "not valid todo" });
+    return res.status(411).json({ msg: "Please enter a valid task of minimum length 1" });
   }
 
   //   const user = req.UserId; //ise ham us nam ka uiser nikallete hai authertication me se

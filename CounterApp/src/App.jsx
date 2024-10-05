@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import "./App.css";
 import {  useRecoilState, useRecoilValue,RecoilRoot, useSetRecoilState } from "recoil";
-import { countAtom } from "./store/atom/count";
+import { countAtom, evenSelector } from "./store/atom/count";
 
 function App() {
   return (
@@ -57,9 +57,14 @@ function Button() {
   );
 }
 function EvencountRenderer(){
-  const count=useRecoilValue(countAtom);
+  // const count=useRecoilValue(countAtom); 
+  // insted of using hard core condition use usememo to handle the conditionall rendering
+  // const iseven=useMemo(()=>{
+  //   return count%2==0;
+  // },[count]) replacing all this stuff from selectoirs
+  const isEven=useRecoilValue(evenSelector);
   return <div>
-   { (count%2==0)?"It is even":null}
+   { isEven?"It is even":null}
   </div>
 }
 

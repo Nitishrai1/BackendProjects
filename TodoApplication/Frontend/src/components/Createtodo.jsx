@@ -1,8 +1,13 @@
 import { useState } from "react"
-
+import { useNavigate } from "react-router-dom";
+import Todos from "./Todos";
 export default function CreateTodo(){
+    const navigate=useNavigate();
     const [title,setTitle]=useState("");
     const [description,setDescription]=useState("");
+    const comback=()=>{
+        navigate("/Todos")
+    }
     return  <div>
         <input style={{
             padding:10,
@@ -38,6 +43,8 @@ export default function CreateTodo(){
             alert(`The backend response is ${data.msg}`)
             
         }}> Add a todo</button>
+        <button onClick={comback}>Go back</button>
 
     </div>
-}4
+    
+}

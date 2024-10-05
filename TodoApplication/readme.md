@@ -32,3 +32,25 @@ Ans: we need context api to make the syntax more cleaner and to get rid of the p
 Recoil:  It has a concept of an atom to store the state
 An atom can be defined outside the component
 can be teleported to any component
+
+The uniqueness i want to built in my todo app are as follows
+
+1. Analytics Dashboard
+Implement an analytics dashboard to show user productivity stats. This can include graphs showing how many tasks were completed each day, average task completion time, tasks by category, etc.
+
+Feature: Visual insights (bar charts, pie charts) into user productivity.
+Impact: Adds value by helping users track their progress and identify patterns.
+
+
+2. Todo Suggestions Based on Usage Patterns
+Use machine learning or data analysis to suggest similar todos or repeat tasks based on the user's past behavior. This could include recurring tasks or auto-suggestions based on keywords or categories the user frequently uses.
+
+Feature: Smart suggestions for recurring tasks or common categories.
+Impact: Makes task creation faster and reduces user input effort.
+
+
+3. Reminders and Notifications with Integrations
+Integrate push notifications, email, or SMS reminders for upcoming or overdue tasks. You can also integrate with calendar applications like Google Calendar to sync todos as events.
+
+Feature: Push notifications, calendar integration, and reminders.
+Impact: Enhances usability by making sure users never miss a task.
