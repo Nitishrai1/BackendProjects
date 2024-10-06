@@ -54,3 +54,5 @@ Integrate push notifications, email, or SMS reminders for upcoming or overdue ta
 
 Feature: Push notifications, calendar integration, and reminders.
 Impact: Enhances usability by making sure users never miss a task.
+
+These are the uniqure feature which will make my resume stand out of the box
