@@ -19,14 +19,15 @@ export default function Loginform ({setAuthenticated}) {
       });
       const res = await response.json(); //isme se token nikal lege ham log
       if (response.ok) {
-        localStorage.setItem("Token", res.token);
+        localStorage.setItem("token", res.token);
         setAuthenticated(true);
         alert(`Logged in successfull`)
         navigate("/todos")
         
       } else {
+        alert("Incorrect username or password");
         
-        console.log("sigin failed");
+        
       }
     } catch (err) {
       console.log("Error occured", err);

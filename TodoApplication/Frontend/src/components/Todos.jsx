@@ -1,13 +1,18 @@
 import updatetodo from "./updatetodo";
 import { useEffect, useState } from "react";
 import CreateTodo from "./Createtodo";
-import {  Route, useNavigate } from "react-router-dom";
+import { Route, useNavigate } from "react-router-dom";
+
+
+
+
 export default function Todos() {
   const [todos, setTodos] = useState([]);
-  const [Alltodos,setAllTodos]=useState([]);
-  const navigate=useNavigate();
+  const [Alltodos, setAllTodos] = useState([]);
+  const [showAlltodos, setShowAlltodos] = useState(false);
+  const navigate = useNavigate();
   const fetchdata = async () => {
-    const token = localStorage.getItem("Token");
+    const token = localStorage.getItem("token");
     console.log(`token in localstorage is ${token}`);
     try {
       const response = await fetch("http://localhost:3000/user/todos", {
@@ -18,11 +23,12 @@ export default function Todos() {
         },
       });
       const res = await response.json();
+      console.log("inside the fetch funciton");
       if (response.ok) {
         console.log(`Data fetched from data base succesull`);
         setTodos(res.todos);
       } else {
-        console.log(`Error in fetching the data`);
+        console.log(`Error in fetching the Data`);
       }
     } catch (err) {
       console.log(`Error occured ${err}`);
@@ -30,7 +36,6 @@ export default function Todos() {
   };
   useEffect(() => {
     fetchdata();
-    getalltodos();
   }, []);
 
   const handleMarkAsCompleted = async (todoId) => {
@@ -43,34 +48,29 @@ export default function Todos() {
       console.log(`Error updating todo: ${err}`);
     }
   };
-  const addtodo=()=>{
+  const addtodo = () => {
     console.log("inside the new todo compoenent");
-    navigate("/createtodo")
-  }
-  const getalltodos=async ()=>{
-    const token = localStorage.getItem("Token");
- 
-    try{
-      const response=await fetch("http://localhost:3000/user/alltodos",{
+    navigate("/createtodo");
+  };
+  const getalltodos = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch("http://localhost:3000/user/alltodos", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           authorization: `${token}`,
         },
-
       });
-      const res=await response.json();
+      const res = await response.json();
       setAllTodos(res.todos);
-      AlltodoRenderer(Alltodos)
-      
-
-    }catch(err){
-      console.log("Error occured fechting all the todos",err);
+      setShowAlltodos(res.todos);
+      setShowAlltodos(true);
+    } catch (err) {
+      console.log("Error occured fechting all the todos", err);
     }
-  }
-
-
-  
+  };
 
   return (
     //single top level parent hai jiske andar sab hai
@@ -79,14 +79,18 @@ export default function Todos() {
         <button onClick={addtodo}> Add todo</button>
         <button onClick={getalltodos}>Get all todos</button>
       </div>
+      <h1>Current Not completed Todos</h1>
       {todos
         .filter((todo) => !todo.completed)
         .map(function (todo) {
+          
           return (
             // eslint-disable-next-line react/jsx-key
             <div>
-              <h1>{todo.title}</h1>
-              <h1>{todo.description}</h1>
+              <h4>Task:</h4>
+
+              <h1>Title: {todo.title}</h1>
+              <h1>Description {todo.description}</h1>
               <button
                 style={{
                   padding: 10,
@@ -106,16 +110,16 @@ export default function Todos() {
               >
                 Mark as completed
               </button>
-              {Alltodos.length > 0 && <AlltodoRenderer todos={Alltodos} />}
             </div>
           );
         })}
+      {showAlltodos && <AlltodoRenderer todos={Alltodos} />}
     </div>
   );
 }
 
 function AlltodoRenderer({ todos }) {
-  console.log("Inside the alltodorenderer ",todos)
+  console.log("Inside the alltodorenderer ", todos);
   let a = 1;
   return (
     <div>

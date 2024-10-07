@@ -26,8 +26,8 @@ export default function CreateTodo(){
             padding:10,
             margin:10
         }} onClick={async()=>{
-            console.log(localStorage.getItem('Token'));
-            const token=localStorage.getItem('Token');
+            console.log(localStorage.getItem('token'));
+            const token=localStorage.getItem('token');
            const response= await fetch("http://localhost:3000/user/todo",{
                 method:'POST',
                 headers:{

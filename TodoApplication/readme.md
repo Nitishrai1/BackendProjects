@@ -33,6 +33,18 @@ Recoil:  It has a concept of an atom to store the state
 An atom can be defined outside the component
 can be teleported to any component
 
+Web hooks : it is used when we make any payment gateway and let suppose i have closed my browser after doing the payment but when the razor pay tells that the item has been purchaed but now my browser is dowm so insted of telling to my borwser web hooks are you to tell to my backend whichh is always runing
+it is just as a service like SMS as a serive , file as a service 
+
+
+
+
+
+
+
+
+
+
 The uniqueness i want to built in my todo app are as follows
 
 1. Analytics Dashboard

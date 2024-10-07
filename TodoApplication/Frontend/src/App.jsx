@@ -14,7 +14,7 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("Token");
+    const token = localStorage.getItem("token");
     if (token) {
       setAuthenticated(true);
       fetchTodos(token); // Fetch todos if user is authenticated
@@ -29,7 +29,7 @@ function App() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Use "Bearer" for token in header
+          authorization: `${token}`,
         },
       });
       const res = await response.json();
@@ -55,8 +55,26 @@ function App() {
       </div>
 
       <BrowserRouter>
-        <Appbar isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} />
+        <Appbar
+          isAuthenticated={isAuthenticated}
+          setAuthenticated={setAuthenticated}
+        />
+
         <Routes>
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <Suspense fallback={"Loading..."}>
+                  <Todos todos={todos} /> {/* Pass todos as props */}
+                </Suspense>
+              ) : (
+                <Suspense fallback={"Loading..."}>
+                  <Loginform setAuthenticated={setAuthenticated} />
+                </Suspense>
+              )
+            }
+          />
           <Route
             path="/signup"
             element={
@@ -65,6 +83,7 @@ function App() {
               </Suspense>
             }
           />
+
           <Route
             path="/login"
             element={
@@ -111,7 +130,7 @@ function Appbar({ isAuthenticated, setAuthenticated }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("Token");
+    localStorage.removeItem("token");
     setAuthenticated(false);
     navigate("/login");
   };

@@ -1,6 +1,6 @@
 export default async function updatetodo(id){
     try {
-        const token = localStorage.getItem("Token");
+        const token = localStorage.getItem("token");
         console.log(token);
         const response = await fetch("http://localhost:3000/user/completed", {
           method: "PUT",

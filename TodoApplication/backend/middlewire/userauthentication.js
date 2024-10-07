@@ -3,7 +3,9 @@ const jwtkey = "fuckoffhacker";
 const jwt=require("jsonwebtoken");
 
 const userauth=async function(req,res,next){
+    
     const token=req.headers.authorization;
+    
     console.log(`token in the middle wire is ${token}`);
     if(!token){
         return res.status(401).json({msg:"Token not provided"});
@@ -26,7 +28,8 @@ const userauth=async function(req,res,next){
         req.userId=username;
         next();
     }catch(err){
-        return res.status(500).json({msg:"Internal server error in middlewire"});
+        console.log(err);
+        return res.status(500).json({msg:"Internal server error in middlewire"} );
    }
 
     };

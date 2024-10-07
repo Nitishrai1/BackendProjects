@@ -38,7 +38,7 @@ router.post("/signin", async (req, res) => {
   const userId = user._id;
   // console.log(userId)
   const token = jwt.sign({ userId }, jwtkey);
-  console.log(token);
+  // console.log(token);
   return res.json({ token });
 });
 router.get("/todos", userauth, async function (req, res) {
