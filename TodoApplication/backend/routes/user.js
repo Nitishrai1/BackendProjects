@@ -12,7 +12,7 @@ router.post("/signup", async function (req, res) {
   try {
     const user = await User.findOne({ username, password });
     if (user) {
-      return res.status(411).json({ msg: "User already exist" });
+      return res.status(400).json({ msg: "User already exist Bad request" });
     }
     const newuser = await User.create({
       username: username,
@@ -25,21 +25,25 @@ router.post("/signup", async function (req, res) {
     res.json({ token });
   } catch (err) {
     console.log(err);
-    res.status(411).json({ msg: "internal server error" });
+    res.status(500).json({ msg: "internal server error" });
   }
 });
 router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username, password });
 
-  if (!user) {
-    return res.status(401).json({ msg: "Chala ja bhosdikae" });
+  try{
+    if (!user) {
+      return res.status(401).json({ msg: "Chala ja bhosdikae" });
+    }
+    const userId = user._id;
+    // console.log(userId)
+    const token = jwt.sign({ userId }, jwtkey);
+    // console.log(token);
+    return res.status(200).json({ token });
+  }catch(err){
+    return res.status(500).json({msg:"Internal server error"});
   }
-  const userId = user._id;
-  // console.log(userId)
-  const token = jwt.sign({ userId }, jwtkey);
-  // console.log(token);
-  return res.json({ token });
 });
 router.get("/todos", userauth, async function (req, res) {
   const id = req.userId;
@@ -48,7 +52,7 @@ router.get("/todos", userauth, async function (req, res) {
   try {
     const user = await User.findById({ _id: id });
     if (!user) {
-      return res.status(400).json({ msg: "User does not exist" });
+      return res.status(401).json({ msg: "User does not exist" });
     }
     const todos = user.todos;
 
@@ -61,7 +65,7 @@ router.get("/todos", userauth, async function (req, res) {
     return res.json({msg:"Todo fetched succesfully ",todos:finaltodo})
   } catch (err) {
     console.log(err);
-    return res.json({ msg: "Error in fetching the data" });
+    return res.status(500).json({ msg: "Error in fetching the data" });
   }
 });
 router.get("/alltodos",userauth,async function(req,res){
@@ -69,13 +73,14 @@ router.get("/alltodos",userauth,async function(req,res){
   try{
     const user=await User.findById({_id:id});
     if(!user){
-      return res.status(400).json({msg:"User does not exist"});
+      return res.status(401).json({msg:"User does not exist"});
     }
     const todos=user.todos;
     console.log(todos);
     return res.json({msg:"All todo fetched successfull",todos:todos})
   }catch(err){
     console.log("Error occured in fetching the all todos from the mongodb")
+    return res.status(500).json({msg:"Internal server error"});
   }
 
 });
@@ -128,7 +133,7 @@ router.put("/completed", userauth, async function (req, res) {
       _id: id,
     });
     if (!user) {
-      return res.status(404).json({ msg: "User not found" });
+      return res.status(401).json({ msg: "User not found" });
     }
     const particulartodo = user.todos.id(todo);
     

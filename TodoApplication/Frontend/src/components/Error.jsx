@@ -1,17 +1,33 @@
 
 
 export const BadRequest=()=>{
-    return
+    return(
+        <div>
+            400 Bad Request user already exist please login 
+        </div>
+    )
 }
 
 
 
 export const Unautherised=()=>{
-    return
+    return(
+        <div>
+            401 Unautherized access user does not exist please sign up
+        </div>
+    )
 }
 export const NotFound=()=>{
-    return
+    return(
+        <div>
+            404 NotFound
+        </div>
+    )
 }
 export const InternalserverError=()=>{
-    return
+    return(
+        <div>
+            500 Internal Server Error 
+        </div>
+    )
 }
