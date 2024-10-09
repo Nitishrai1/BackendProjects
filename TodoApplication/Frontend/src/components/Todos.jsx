@@ -1,15 +1,14 @@
 import updatetodo from "./updatetodo";
 import { useEffect, useState } from "react";
-import CreateTodo from "./Createtodo";
 import { Route, useNavigate } from "react-router-dom";
-
-
-
+import Dashboard from "./Dashboard";
 
 export default function Todos() {
   const [todos, setTodos] = useState([]);
   const [Alltodos, setAllTodos] = useState([]);
   const [showAlltodos, setShowAlltodos] = useState(false);
+  const [showDashboard, setDashboard] = useState(false);
+
   const navigate = useNavigate();
   const fetchdata = async () => {
     const token = localStorage.getItem("token");
@@ -26,7 +25,7 @@ export default function Todos() {
       console.log("inside the fetch funciton");
       if (response.ok) {
         console.log(`Data fetched from data base succesull`);
-        setTodos(res.todos);
+        setTodos(res.todos || []);
       } else {
         console.log(`Error in fetching the Data`);
       }
@@ -64,12 +63,17 @@ export default function Todos() {
         },
       });
       const res = await response.json();
-      setAllTodos(res.todos);
-      setShowAlltodos(res.todos);
-      setShowAlltodos(true);
+      setAllTodos(res.todos); // Assign the todos to the Alltodos state
+      setShowAlltodos(true);   // Set the showAlltodos flag to true
+      
     } catch (err) {
       console.log("Error occured fechting all the todos", err);
     }
+  };
+
+  const toggleDashboard = () => {
+    getalltodos();
+    setDashboard(!showDashboard);
   };
 
   return (
@@ -78,42 +82,50 @@ export default function Todos() {
       <div>
         <button onClick={addtodo}> Add todo</button>
         <button onClick={getalltodos}>Get all todos</button>
+        <button onClick={toggleDashboard}>
+          {showDashboard ? `Hide Dashboard` : "Show Dashboards"}
+        </button>
       </div>
-      <h1>Current Not completed Todos</h1>
-      {todos
-        .filter((todo) => !todo.completed)
-        .map(function (todo) {
-          
-          return (
-            // eslint-disable-next-line react/jsx-key
-            <div>
-              <h4>Task:</h4>
+      {showDashboard ? (
+        <Dashboard todos={Alltodos} />
+      ) : (
+        <>
+          <h1>Current Not completed Todos</h1>
+          {todos
+            .filter((todo) => !todo.completed)
+            .map(function (todo) {
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <div>
+                  <h4>Task:</h4>
 
-              <h1>Title: {todo.title}</h1>
-              <h1>Description {todo.description}</h1>
-              <button
-                style={{
-                  padding: 10,
-                  margin: 10,
-                }}
-              >
-                {todo.completed == true ? "Completed" : "Not completed"}
-              </button>
-              <button
-                style={{
-                  padding: 10,
-                  margin: 10,
-                }}
-                onClick={() => {
-                  handleMarkAsCompleted(todo._id);
-                }}
-              >
-                Mark as completed
-              </button>
-            </div>
-          );
-        })}
-      {showAlltodos && <AlltodoRenderer todos={Alltodos} />}
+                  <h1>Title: {todo.title}</h1>
+                  <h1>Description {todo.description}</h1>
+                  <button
+                    style={{
+                      padding: 10,
+                      margin: 10,
+                    }}
+                  >
+                    {todo.completed == true ? "Completed" : "Not completed"}
+                  </button>
+                  <button
+                    style={{
+                      padding: 10,
+                      margin: 10,
+                    }}
+                    onClick={() => {
+                      handleMarkAsCompleted(todo._id);
+                    }}
+                  >
+                    Mark as completed
+                  </button>
+                </div>
+              );
+            })}
+          {showAlltodos && <AlltodoRenderer todos={Alltodos} />}
+        </>
+      )}
     </div>
   );
 }
