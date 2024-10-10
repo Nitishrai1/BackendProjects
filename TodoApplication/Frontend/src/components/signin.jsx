@@ -6,6 +6,12 @@ import {
   NotFound,
   InternalserverError,
 } from "./Error";
+
+
+
+
+
+
 export default function Loginform({ setAuthenticated }) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -57,6 +63,11 @@ export default function Loginform({ setAuthenticated }) {
         return null;
     }
   };
+  console.log(`Inside the sigin form`)
+  function forgetcomponentRenderer(e){
+    e.preventDefault();
+    navigate("/forgetpassword")
+  }
  
   return (
     <div>
@@ -95,8 +106,9 @@ export default function Loginform({ setAuthenticated }) {
             margin: 10,
           }}
         >
-          Click Me
+          Sign In
         </button>
+        <button type="button" onClick={forgetcomponentRenderer}>Forget password</button>
       </form>
      
       }

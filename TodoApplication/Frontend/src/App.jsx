@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import "./App.css";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import ForgetPassword from "./components/ForgetPassword";
 
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Createtodo"));
@@ -89,6 +90,14 @@ function App() {
             element={
               <Suspense fallback={"Loading..."}>
                 <Loginform setAuthenticated={setAuthenticated} />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/forgetpassword"
+            element={
+              <Suspense fallback={"Loading..."}>
+                <ForgetPassword />
               </Suspense>
             }
           />

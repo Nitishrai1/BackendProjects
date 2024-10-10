@@ -5,6 +5,10 @@ const router = Router();
 const jwt = require("jsonwebtoken");
 const { createTodo, updateTodo } = require("../utils");
 const jwtkey = "fuckoffhacker";
+const {sendSignupEmail}=require("../middlewire/emailnotification")
+const crypto=require("crypto");  //this is for resent token generation
+const {sendResetPassword}=require("../middlewire/emailnotification")
+
 
 router.post("/signup", async function (req, res) {
   const { username, password } = req.body;
@@ -19,15 +23,23 @@ router.post("/signup", async function (req, res) {
       password: password,
       todos: [],
     });
+    await newuser.save();
 
     const token = jwt.sign({ username }, jwtkey);
-
+    await sendSignupEmail(username);
     res.json({ token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "internal server error" });
   }
 });
+
+
+
+
+
+
+
 router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username, password });
@@ -45,6 +57,70 @@ router.post("/signin", async (req, res) => {
     return res.status(500).json({msg:"Internal server error"});
   }
 });
+
+// logic for forget password
+router.post('/forgot-password',async(req,res)=>{
+  const {email}=req.body;
+  console.log(email);
+
+  try{
+    const user=await User.findOne({
+      username:email,
+    });
+    if(!user){
+      return res.status(404).json({msg:"user does not exits"});
+    }
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken=resetToken;
+    user.resetPasswordExpires=Date.now()+3600000;
+    await user.save();
+    sendResetPassword(email,resetToken);  //isi me wo token bhi url ke sath user ko chala jayega fir yek new api call hoga jo wo token nikal lega or database me chaeck karega agar same hoga to password ko change karne ki permission ahi user ko
+
+    return res.status(200).json({ message: 'Password reset email sent successfully',resetToken });
+  }catch(err){
+    console.log(`Error occured in the forgot password logic ${err}`);
+    return res.status(500).json({msg:"Error in sending teh reset email please try again"})
+  }
+
+})
+
+// api for the resent link verification ans actuall reseting the password
+router.post('/reset-password/:token',async(req,res)=>{
+  const {token}=req.params;
+  const {password}=req.body;
+  console.log(`Reset logic called with the resettoken as ${token} ans new password is ${password}`)
+  try{
+    const user=await User.findOne({
+      resetPasswordToken:token,
+      resetPasswordExpires:{ $gt: Date.now() },  //check the token has not been expired
+    })
+
+
+    if(!user){
+      return res.status(404).json({message:"User does not exist"});
+    }
+
+    user.password=password;
+    user.resetPasswordExpires=undefined;
+    user.resetPasswordToken=undefined;
+    await user.save();
+    console.log("password has been updated successfully")
+    res.status(200).json({ message: 'Password has been reset successfully' });
+  }catch(err){
+    console.log("Error in the reset token route",err);
+    return res.status(500).json({message:"Internal server error in the reset link of the token validation"})
+  }
+
+
+  
+})
+
+
+
+
+
+
+
 router.get("/todos", userauth, async function (req, res) {
   const id = req.userId;
   
@@ -68,6 +144,14 @@ router.get("/todos", userauth, async function (req, res) {
     return res.status(500).json({ msg: "Error in fetching the data" });
   }
 });
+
+
+
+
+
+
+
+
 router.get("/alltodos",userauth,async function(req,res){
   const id=req.userId;
   try{
@@ -84,6 +168,14 @@ router.get("/alltodos",userauth,async function(req,res){
   }
 
 });
+
+
+
+
+
+
+
+
 
 router.post("/todo", userauth, async function (req, res) {
   const { title, description, completed } = req.body;
@@ -117,6 +209,14 @@ router.post("/todo", userauth, async function (req, res) {
 
   return res.status(200).json({ msg: "Todos updated succesfull" });
 });
+
+
+
+
+
+
+
+
 
 router.put("/completed", userauth, async function (req, res) {
   // ye to simple hai yek todo ki id milegai usko delete parna hai bass
