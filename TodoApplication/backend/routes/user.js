@@ -8,7 +8,7 @@ const jwtkey = "fuckoffhacker";
 const {sendSignupEmail}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
 const {sendResetPassword}=require("../middlewire/emailnotification")
-
+// 
 
 router.post("/signup", async function (req, res) {
   const { username, password } = req.body;
