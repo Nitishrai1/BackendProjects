@@ -8,7 +8,6 @@ const jwtkey = "fuckoffhacker";
 const {sendSignupEmail}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
 const {sendResetPassword}=require("../middlewire/emailnotification")
-// 
 
 router.post("/signup", async function (req, res) {
   const { username, password } = req.body;
@@ -84,12 +83,14 @@ router.post('/forgot-password',async(req,res)=>{
 
 })
 
+
+
 // api for the resent link verification ans actuall reseting the password
-router.post('/reset-password/:token',async(req,res)=>{
-  const {token}=req.params;
-  const {password}=req.body;
-  console.log(`Reset logic called with the resettoken as ${token} ans new password is ${password}`)
+router.post('/reset-password',async(req,res)=>{
+  
+  const {password,token}=req.body;
   try{
+    console.log(`Reset logic called with the resettoken as ${token} ans new password is ${password}`)
     const user=await User.findOne({
       resetPasswordToken:token,
       resetPasswordExpires:{ $gt: Date.now() },  //check the token has not been expired

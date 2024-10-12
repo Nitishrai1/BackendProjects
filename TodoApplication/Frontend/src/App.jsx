@@ -3,6 +3,7 @@ import "./App.css";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import ForgetPassword from "./components/ForgetPassword";
+import ResetFormComponent from "./components/ResetFormComponent";
 
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Createtodo"));
@@ -98,6 +99,14 @@ function App() {
             element={
               <Suspense fallback={"Loading..."}>
                 <ForgetPassword />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/reset-password/:resetToken"
+            element={
+              <Suspense fallback={"Loading..."}>
+                <ResetFormComponent />
               </Suspense>
             }
           />

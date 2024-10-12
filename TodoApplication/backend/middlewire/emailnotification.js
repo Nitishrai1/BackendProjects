@@ -29,6 +29,9 @@ const sendSignupEmail=async(email)=>{
 }
 
 
+
+
+
 const sendResetPassword=async (email,resetToken)=>{
   try{
     const transporter=nodemailer.createTransport({
@@ -41,7 +44,7 @@ const sendResetPassword=async (email,resetToken)=>{
     })
     // reset link de dete hai user ko
 
-    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
     const mailoption={
       from:'nitishraigkp007@gmail.com',
       to:email,
