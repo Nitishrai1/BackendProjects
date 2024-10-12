@@ -3,7 +3,7 @@ const User = require("../db");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 const jwt = require("jsonwebtoken");
-const { createTodo, updateTodo } = require("../utils");
+const { createTodo, updateTodo,uservalidation } = require("../utils");
 const jwtkey = "fuckoffhacker";
 const {sendSignupEmail, sendLoggedInNotification}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
@@ -12,13 +12,21 @@ const {sendResetPassword}=require("../middlewire/emailnotification")
 router.post("/signup", async function (req, res) {
   const { username, password } = req.body;
 
+
   try {
-    const user = await User.findOne({ username, password });
-    if (user) {
+    const user=uservalidation.safeParse(username);
+    if(!user.success){
+      
+      return res.status(404).json({msg:"Please enter a valid email"});
+    }
+
+    const uservalidated=user.data;
+    const response = await User.findOne({ uservalidated, password });
+    if (response) {
       return res.status(400).json({ msg: "User already exist Bad request" });
     }
     const newuser = await User.create({
-      username: username,
+      username: uservalidated,
       password: password,
       todos: [],
     });
