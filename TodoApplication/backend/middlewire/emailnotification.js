@@ -70,4 +70,36 @@ const sendResetPassword=async (email,resetToken)=>{
   }
 }
 
-module.exports={sendSignupEmail,sendResetPassword};
+const sendLoggedInNotification=async(email)=>{
+  try{
+    const transporter=nodemailer.createTransport({
+      service:'Gmail',
+      auth:{
+        user:'nitishraigkp007@gmail.com',
+        pass:'qxnjwvtcixllmtnq'
+
+      }
+    });
+
+    const mailoption={
+      from:"nitishraigkp007@gmail.com",
+      to:email,
+      subject:`Logged in successfull`,
+      text:`You have Logged in the Todo App successfully`
+    }
+
+    await transporter.sendMail(mailoption,(error,info)=>{
+
+      if(error){
+        console.log("Error in sending the logging meesage");
+      }else{
+        console.log("Logged in message sent succesffuly");
+      }
+    });
+
+  }catch(err){
+    console.log("Error in the tranporter")
+  }
+}
+
+module.exports={sendSignupEmail,sendResetPassword,sendLoggedInNotification};

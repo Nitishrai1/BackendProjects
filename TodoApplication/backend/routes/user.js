@@ -5,7 +5,7 @@ const router = Router();
 const jwt = require("jsonwebtoken");
 const { createTodo, updateTodo } = require("../utils");
 const jwtkey = "fuckoffhacker";
-const {sendSignupEmail}=require("../middlewire/emailnotification")
+const {sendSignupEmail, sendLoggedInNotification}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
 const {sendResetPassword}=require("../middlewire/emailnotification")
 
@@ -51,6 +51,8 @@ router.post("/signin", async (req, res) => {
     // console.log(userId)
     const token = jwt.sign({ userId }, jwtkey);
     // console.log(token);
+    sendLoggedInNotification(username);
+
     return res.status(200).json({ token });
   }catch(err){
     return res.status(500).json({msg:"Internal server error"});

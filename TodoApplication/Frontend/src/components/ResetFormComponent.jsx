@@ -9,8 +9,8 @@ export default function ResetFormComponent(){
     const [errormsg,setErrormsg]=useState("");
     const {resetToken}=useParams();
     
-    const resetPasswordWithToken=async(newpassword,resetToken)=>{
-        console.log(resetToken);
+    const resetPasswordWithToken=async(resetToken,newpassword)=>{
+        console.log(`the reset token is ${resetToken}`);
         console.log(newpassword);
         try{
             const response=await fetch(`http://localhost:3000/user/reset-password`,{
@@ -21,8 +21,8 @@ export default function ResetFormComponent(){
 
                 },
                 body:JSON.stringify({
-                    password:resetToken,
-                    token:newpassword
+                    password:newpassword,
+                    token:resetToken
                 })
             });
             const data=await response.json();
