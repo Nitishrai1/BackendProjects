@@ -21,7 +21,9 @@ router.post("/signup", async function (req, res) {
     }
 
     const uservalidated=user.data;
-    const response = await User.findOne({ uservalidated, password });
+    const response = await User.findOne({
+      username:uservalidated
+     });
     if (response) {
       return res.status(400).json({ msg: "User already exist Bad request" });
     }
