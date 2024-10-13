@@ -29,6 +29,7 @@ export default function Signup() {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         alert("Sign-up successfull");
+        navigate("/login")
       } else {
         alert(`Error in sign up ${data.msg}`);
       }

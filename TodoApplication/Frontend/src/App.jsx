@@ -65,7 +65,6 @@ function App() {
             element={
               isAuthenticated ? (
                 <Suspense fallback={"Loading..."}>
-                
                   <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>
                 </Suspense>
               ) : (

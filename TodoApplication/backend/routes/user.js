@@ -259,10 +259,6 @@ router.put("/completed", userauth, async function (req, res) {
 
     await user.save();
 
-    // or we can do that
-    // await user.todos.updateById(id,{
-    //     completed:true
-    // })
 
     return res.status(200).json({ msg: "Task completed" });
   } catch (err) {
