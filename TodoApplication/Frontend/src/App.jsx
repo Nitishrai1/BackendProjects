@@ -10,6 +10,7 @@ const CreateTodo = lazy(() => import("./components/Createtodo"));
 const Todos = lazy(() => import("./components/Todos"));
 const Loginform = lazy(() => import("./components/signin"));
 const Signup = lazy(() => import("./components/signup"));
+const HomePage =lazy(()=>import("./components/HomePage"));
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(null);
@@ -52,15 +53,11 @@ function App() {
 
   return (
     <div>
-      <div style={{ background: "black", color: "white" }}>
-        Welcome to my Todo app
-      </div>
-
       <BrowserRouter>
-        <Appbar
+        {/* <Appbar
           isAuthenticated={isAuthenticated}
           setAuthenticated={setAuthenticated}
-        />
+        /> */}
 
         <Routes>
           <Route
@@ -68,7 +65,8 @@ function App() {
             element={
               isAuthenticated ? (
                 <Suspense fallback={"Loading..."}>
-                  <Todos todos={todos} /> {/* Pass todos as props */}
+                
+                  <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>
                 </Suspense>
               ) : (
                 <Suspense fallback={"Loading..."}>
@@ -115,7 +113,7 @@ function App() {
             element={
               isAuthenticated ? (
                 <Suspense fallback={"Loading..."}>
-                  <Todos todos={todos} /> {/* Pass todos as props */}
+                    <Todos todos={todos} /> {/* Pass todos as props */}
                 </Suspense>
               ) : (
                 <Suspense fallback={"Loading..."}>
@@ -158,10 +156,7 @@ function Appbar({ isAuthenticated, setAuthenticated }) {
       {isAuthenticated ? (
         <button onClick={handleLogout}>Log out</button>
       ) : (
-        <>
-          <button onClick={() => navigate("/signup")}>Sign Up</button>
-          <button onClick={() => navigate("/login")}>Login</button>
-        </>
+        <></>
       )}
     </div>
   );

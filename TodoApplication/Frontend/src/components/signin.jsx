@@ -7,11 +7,6 @@ import {
   InternalserverError,
 } from "./Error";
 
-
-
-
-
-
 export default function Loginform({ setAuthenticated }) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +31,7 @@ export default function Loginform({ setAuthenticated }) {
         localStorage.setItem("token", res.token);
         setAuthenticated(true);
         alert(`Logged in successfull`);
-        navigate("/todos");
+        navigate("/");
       } else {
         alert("Incorrect username or password");
       }
@@ -49,70 +44,104 @@ export default function Loginform({ setAuthenticated }) {
     switch (statusCode) {
       case 400:
         return <BadRequest />;
-        
+
       case 401:
-       return <Unautherised />;
-       
+        return <Unautherised />;
+
       case 404:
-       return <NotFound />;
-       
+        return <NotFound />;
+
       case 500:
         return <InternalserverError />;
-        
+
       default:
         return null;
     }
   };
-  console.log(`Inside the sigin form`)
-  function forgetcomponentRenderer(e){
+  console.log(`Inside the sigin form`);
+  function forgetcomponentRenderer(e) {
     e.preventDefault();
-    navigate("/forgetpassword")
+    navigate("/forgetpassword");
   }
- 
+
+  function signupRenderer(e) {
+    e.preventDefault();
+    navigate("/signup");
+  }
+
   return (
-    <div>
-      
-        {statusCode ?(
+    <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex flex-col items-center justify-center">
+      <div className="flex items-center justify-center">
+        {statusCode ? (
           rendereError()
-        ):
-        <form action="" onSubmit={authenticate}>
-        <input
-          style={{
-            padding: 10,
-            margin: 10,
-          }}
-          type="text"
-          placeholder="name"
-          onChange={function (e) {
-            setName(e.target.value);
-          }}
-        />
-        <br />
-        <input
-          style={{
-            padding: 10,
-            margin: 10,
-          }}
-          type="password"
-          placeholder="password"
-          onChange={function (e) {
-            setPassword(e.target.value);
-          }}
-        />
-        <br />
-        <button
-          style={{
-            padding: 10,
-            margin: 10,
-          }}
-        >
-          Sign In
-        </button>
-        <button type="button" onClick={forgetcomponentRenderer}>Forget password</button>
-      </form>
-     
-      }
-      
+        ) : (
+          <form
+            className="bg-white rounded-lg p-10 shadow-lg w-96 max-w-lg"
+            onSubmit={authenticate}
+          >
+            <div className="text-black text-3xl font-bold mb-8 text-center">
+              Log In
+            </div>
+
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 font-medium mb-2"
+                htmlFor="username"
+              >
+                Username
+              </label>
+              <input
+                id="username"
+                className="p-3 border border-gray-300 rounded w-full"
+                type="text"
+                placeholder="Enter your username"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-8">
+              <label
+                className="block text-gray-700 font-medium mb-2"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                className="p-3 border border-gray-300 rounded w-full"
+                type="password"
+                placeholder="Enter your password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={forgetcomponentRenderer}
+              className="mt-2 r-0 text-indigo-600 hover:underline"
+            >
+              Forgot Password?
+            </button>
+
+            <button
+              type="submit"
+              
+              className="w-full bg-indigo-600 text-white font-bold py-3 rounded hover:bg-indigo-700 transition duration-200"
+            >
+              Sign In
+            </button>
+
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={signupRenderer}
+                className="mt-6 text-indigo-600  hover:underline"
+              >
+                Sign Up?
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 }

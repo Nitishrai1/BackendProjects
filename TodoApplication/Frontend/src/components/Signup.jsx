@@ -5,13 +5,15 @@ import {
   NotFound,
   InternalserverError,
 } from "./Error";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [statusCode, setStatusCode] = useState(null);
+  const navigate = useNavigate();
 
-  const handlesignup = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     try {
@@ -34,7 +36,7 @@ export default function Signup() {
       console.log("Error in generating token", err);
     }
   };
-  const rendereError = () => {
+  const renderError = () => {
     console.log("eror called");
     switch (statusCode) {
       case 400:
@@ -54,41 +56,73 @@ export default function Signup() {
     }
   };
 
+  function loginRenderer(e) {
+    e.preventDefault();
+    navigate("/login");
+  }
+
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex flex-col items-center justify-center">
       {statusCode ? (
-        rendereError()
+        renderError()
       ) : (
-        <form onSubmit={handlesignup}>
-          <label
-            style={{
-              border: 3,
-              margin: 10,
-              padding: 5,
-            }}
-          >
-            Username:
+        <form
+          className="bg-white rounded-lg p-10 shadow-lg w-96 max-w-lg"
+          onSubmit={handleSignup}
+        >
+          <div className="text-black text-3xl font-bold mb-8 text-center">
+            Sign Up
+          </div>
+
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 font-medium mb-2"
+              htmlFor="username"
+            >
+              Username:
+            </label>
             <input
+              id="username"
+              className="p-3 border border-gray-300 rounded w-full"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
             />
-          </label>
-          <label
-            style={{
-              border: 3,
-              margin: 10,
-              padding: 5,
-            }}
-          >
-            Password:
+          </div>
+
+          <div className="mb-8">
+            <label
+              className="block text-gray-700 font-medium mb-2"
+              htmlFor="password"
+            >
+              Password:
+            </label>
             <input
+              id="password"
+              className="p-3 border border-gray-300 rounded w-full"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
             />
-          </label>
-          <button type="Submit">Sign Up</button>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white font-bold py-3 rounded hover:bg-indigo-700 transition duration-200"
+          >
+            Sign Up
+          </button>
+          <div className="flex justify-center">
+            <button
+              type="button"
+              onClick={loginRenderer}
+              className="mt-6 text-indigo-600 hover:underline"
+            >
+              Log In?
+            </button>
+          </div>
         </form>
       )}
     </div>
