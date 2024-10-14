@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useCallback } from "react";
+
 import { Search, Bell, Calendar, ChevronDown } from "lucide-react";
 
 
@@ -43,14 +43,7 @@ export default function NavBarSection({filterdTodos,setFilterdtodos, searchquery
       console.log(`Error in searching for the filter data`);
     }
   }
-  // const handleEnter=async(event)=>{
-  //   if(event.key==='Enter'){
-  //     await updateFilteredTodo();
-  //     console.log("Search triggered by Enter key:", event.target.value);
-
-  //   }
-  // }
-
+ 
 
   return (
     <nav className="bg-[#f2f6fe]">

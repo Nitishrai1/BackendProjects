@@ -10,7 +10,7 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated }) {
   const [filterdTodos, setFilterdtodos] = useState(todos);
 
   return (
-    <div className="flex bg-[#f2f6fe] min-h-screen">
+    <div className="flex bg-[#f2f6fe] min-h-screen border-box">
       <LeftSidebar
         isAuthenticated={isAuthenticated}
         setAuthenticated={setAuthenticated}
