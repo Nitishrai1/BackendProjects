@@ -1,26 +1,72 @@
 import React, { useState } from "react";
+import { useCallback } from "react";
 import { Search, Bell, Calendar, ChevronDown } from "lucide-react";
 
-export default function NavBarSection({ searchquery , setSearchquery}) {
 
-    
+export default function NavBarSection({filterdTodos,setFilterdtodos, searchquery, setSearchquery }) {
+  
+
+  let timerId;
+  function handleChange(e) {
+    const query=e.target.value;
+
+    if(timerId){
+      clearTimeout(timerId);
+    }
+
+
+    timerId=setTimeout(async() => {
+      setSearchquery(query)
+      updateFilteredTodo();
+      console.log(`Setup done for ${query}`)
+      
+    }, 500);
+
+
+  }
+
+  async function updateFilteredTodo(){
+    const token = localStorage.getItem("token");
+    const response=await fetch(`http://localhost:3000/user/Search/${searchquery}`,{
+      method:'GET',
+      headers:{
+        'Content-type':"application/json",
+        authorization: `${token}`,
+      },
+    })
+    const data=await response.json();
+    if(response.ok){
+      console.log(`Filtered data fetched succefully ${data.task}`);
+      setFilterdtodos(data.task)
+
+    }else{
+      console.log(`Error in searching for the filter data`);
+    }
+  }
+  // const handleEnter=async(event)=>{
+  //   if(event.key==='Enter'){
+  //     await updateFilteredTodo();
+  //     console.log("Search triggered by Enter key:", event.target.value);
+
+  //   }
+  // }
+
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-[#f2f6fe]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-1 flex items-center">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />  
+                <Search className="h-5 w-5 text-gray-400" />
               </div>
+
               <input
                 type="text"
                 placeholder="Search"
-                value={searchquery}
-                onChange={function handle(e){
-                  
-                }}
+                onChange={handleChange}
+                // onKeyDown={handleEnter}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
