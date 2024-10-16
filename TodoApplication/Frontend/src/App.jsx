@@ -16,12 +16,14 @@ const HomePage =lazy(()=>import("./components/HomePage"));
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(null);
   const [todos, setTodos] = useState([]);
+  const [userdata,setUserdata]=useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setAuthenticated(true);
       fetchTodos(token); // Fetch todos if user is authenticated
+      fetchUserData(token);
     } else {
       setAuthenticated(false);
     }
@@ -33,7 +35,7 @@ function App() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          authorization: `${token}`,
+          authorization: token,
         },
       });
       const res = await response.json();
@@ -48,6 +50,31 @@ function App() {
     }
   };
 
+  const fetchUserData=async (token)=>{
+    try{
+      const response=await fetch("http://localhost:3000/user/userprofile",{
+        method:'GET',
+        headers:{
+          "Content-Type":"application/json",
+          authorization:token,
+        },
+
+      });
+      const res=await response.json();
+      if(response.ok){
+        setUserdata(res.userProfile);
+        console.log("userdata set succesfull");
+      }else{
+        console.log("Error in fetching the user data");
+      }
+    }catch(err){
+      console.log(`Error occured ${err}`);
+    }
+
+
+
+  }
+
   if (isAuthenticated == null) {
     return <div>Loading authentication status...</div>;
   }
@@ -55,10 +82,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        {/* <Appbar
-          isAuthenticated={isAuthenticated}
-          setAuthenticated={setAuthenticated}
-        /> */}
+       
 
         <Routes>
           <Route
@@ -87,7 +111,7 @@ function App() {
             path="/userProfile"
             element={
               <Suspense fallback={"Loading..."}>
-                <UserProfile todos={todos}/>
+                <UserProfile todos={todos} userdata={userdata}/>
               </Suspense>
             }
           />
@@ -151,24 +175,5 @@ function App() {
   );
 }
 
-function Appbar({ isAuthenticated, setAuthenticated }) {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setAuthenticated(false);
-    navigate("/login");
-  };
-
-  return (
-    <div>
-      {isAuthenticated ? (
-        <button onClick={handleLogout}>Log out</button>
-      ) : (
-        <></>
-      )}
-    </div>
-  );
-}
 
 export default App;

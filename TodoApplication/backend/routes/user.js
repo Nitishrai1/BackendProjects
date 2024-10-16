@@ -194,6 +194,36 @@ router.get("/alltodos",userauth,async function(req,res){
 
 });
 
+router.get("/userProfile",userauth,async (req,res)=>{
+  const id=req.userId;
+
+  try{
+      console.log(`In the profile route`)
+      const user=await User.findOne({
+          _id:id
+      })
+      if(!user){
+          console.log("user does not exist");
+          return res.status(404).json({msg:"user does not exist "});
+      }
+      const userProfile={
+          email:user.email,
+          username:user.username,
+          ImageLink:user.imageLink
+
+      }
+      return res.status(200).json({msg:`User data are`,userProfile})
+
+  }catch(err){
+      console.log(`Error in getting the data of the user `);
+      return res.status(500).json({msg:"Internal server error"});
+
+  }
+})
+
+
+
+
 
 
 
