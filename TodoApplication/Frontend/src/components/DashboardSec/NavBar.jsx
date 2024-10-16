@@ -1,49 +1,54 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect, useRef } from "react";
 import { Search, Bell, Calendar, ChevronDown } from "lucide-react";
 
+export default function NavBarSection({
+  filteredTodos,
+  setFilteredTodos,
+  searchquery,
+  setSearchquery,
+}) {
+  const timerRef = useRef(null);
 
-export default function NavBarSection({filterdTodos,setFilterdtodos, searchquery, setSearchquery }) {
-  
-
-  let timerId;
-  function handleChange(e) {
-    const query=e.target.value;
-
-    if(timerId){
-      clearTimeout(timerId);
-    }
-
-
-    timerId=setTimeout(async() => {
-      setSearchquery(query)
+  useEffect(() => {
+    if (searchquery.trim() !== "") {
       updateFilteredTodo();
-      console.log(`Setup done for ${query}`)
-      
+    }
+  }, [searchquery]);
+
+  function handleChange(e) {
+    const query = e.target.value;
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setSearchquery(query);
+      console.log(`Search query updated to: ${query}`);
     }, 500);
-
-
   }
 
-  async function updateFilteredTodo(){
+  async function updateFilteredTodo() {
     const token = localStorage.getItem("token");
-    const response=await fetch(`http://localhost:3000/user/Search/${searchquery}`,{
-      method:'GET',
-      headers:{
-        'Content-type':"application/json",
-        authorization: `${token}`,
-      },
-    })
-    const data=await response.json();
-    if(response.ok){
-      console.log(`Filtered data fetched succefully ${data.task}`);
-      setFilterdtodos(data.task)
+    try {
+      const response = await fetch(`http://localhost:3000/user/Search/${searchquery}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          authorization: `${token}`,
+        },
+      });
 
-    }else{
-      console.log(`Error in searching for the filter data`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`Filtered data fetched successfully`, data.task);
+        setFilteredTodos(data.task);
+      } else {
+        console.error("Error in fetching the filtered data");
+      }
+    } catch (error) {
+      console.error("Error in fetching the filtered data:", error);
     }
   }
- 
 
   return (
     <nav className="bg-[#f2f6fe]">
@@ -59,7 +64,6 @@ export default function NavBarSection({filterdTodos,setFilterdtodos, searchquery
                 type="text"
                 placeholder="Search"
                 onChange={handleChange}
-                // onKeyDown={handleEnter}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>

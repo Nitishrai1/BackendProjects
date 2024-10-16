@@ -3,39 +3,51 @@ const User = require("../db");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 const jwt = require("jsonwebtoken");
-const { createTodo, updateTodo,uservalidation } = require("../utils");
+const { createTodo, updateTodo,uservalidation, usernamevalidated } = require("../utils");
 const jwtkey = "fuckoffhacker";
 const {sendSignupEmail, sendLoggedInNotification}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
 const {sendResetPassword}=require("../middlewire/emailnotification")
 
 router.post("/signup", async function (req, res) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
 
   try {
-    const user=uservalidation.safeParse(username);
+    const user=uservalidation.safeParse(email);
+
+    
     if(!user.success){
       
       return res.status(404).json({msg:"Please enter a valid email"});
     }
 
     const uservalidated=user.data;
+
+
+    const emailNamePart=uservalidated.split('@')[0];
+    const randomString = crypto.randomBytes(3).toString('hex');
+    const generatedUsername = `${emailNamePart}_${randomString}`;
+
+
     const response = await User.findOne({
-      username:uservalidated
+      email:uservalidated
      });
     if (response) {
       return res.status(400).json({ msg: "User already exist Bad request" });
     }
     const newuser = await User.create({
-      username: uservalidated,
+      username:generatedUsername,
+      email: uservalidated,
       password: password,
       todos: [],
     });
+
     await newuser.save();
 
-    const token = jwt.sign({ username }, jwtkey);
-    await sendSignupEmail(username);
+   
+    const token = jwt.sign({ username: generatedUsername }, jwtkey);
+    await sendSignupEmail(uservalidated);
     res.json({ token });
   } catch (err) {
     console.log(err);
@@ -50,10 +62,10 @@ router.post("/signup", async function (req, res) {
 
 
 router.post("/signin", async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username, password });
-
+  const { email, password } = req.body;
+  
   try{
+    const user = await User.findOne({ email, password });
     if (!user) {
       return res.status(401).json({ msg: "Chala ja bhosdikae" });
     }
@@ -61,7 +73,7 @@ router.post("/signin", async (req, res) => {
     // console.log(userId)
     const token = jwt.sign({ userId }, jwtkey);
     // console.log(token);
-    sendLoggedInNotification(username);
+    sendLoggedInNotification(email);
 
     return res.status(200).json({ token });
   }catch(err){
@@ -76,7 +88,7 @@ router.post('/forgot-password',async(req,res)=>{
 
   try{
     const user=await User.findOne({
-      username:email,
+      email:email,
     });
     if(!user){
       return res.status(404).json({msg:"user does not exits"});

@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [statusCode, setStatusCode] = useState(null);
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Signup() {
         headers: {
           "content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await response.json(); //ye hota hai taki token le sake ham
       setStatusCode(response.status);
@@ -80,14 +80,14 @@ export default function Signup() {
               className="block text-gray-700 font-medium mb-2"
               htmlFor="username"
             >
-              Username:
+              Email:
             </label>
             <input
               id="username"
               className="p-3 border border-gray-300 rounded w-full"
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your username"
             />
           </div>

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+.scroll-container {
+  height: 350px; 
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 0;
+  background: transparent; 
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
 
 .poppins-extralight {
     font-family: "Poppins", sans-serif;

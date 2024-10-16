@@ -5,7 +5,7 @@ const createTodo=zod.object({
     description:zod.string().min(1)
 })
 
-
+const username=zod.string();
 const useremail=zod.string().email();
 
 const updateTodo=zod.object({
@@ -15,5 +15,6 @@ const updateTodo=zod.object({
 module.exports={
     createTodo:createTodo,
     updateTodo:updateTodo,
-    uservalidation:useremail
+    uservalidation:useremail,
+    usernamevalidated:username
 }

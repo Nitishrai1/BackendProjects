@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import ForgetPassword from "./components/ForgetPassword";
 import ResetFormComponent from "./components/ResetFormComponent";
+import UserProfile from "./components/DashboardSec/UserProfile";
 
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Createtodo"));
@@ -82,6 +83,15 @@ function App() {
               </Suspense>
             }
           />
+           <Route
+            path="/userProfile"
+            element={
+              <Suspense fallback={"Loading..."}>
+                <UserProfile todos={todos}/>
+              </Suspense>
+            }
+          />
+
 
           <Route
             path="/login"

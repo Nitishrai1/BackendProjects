@@ -8,7 +8,7 @@ import {
 } from "./Error";
 
 export default function Loginform({ setAuthenticated }) {
-  const [username, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [statusCode, setStatusCode] = useState(null);
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Loginform({ setAuthenticated }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
       const res = await response.json(); //isme se token nikal lege ham log
       setStatusCode(response.status);
@@ -86,7 +86,7 @@ export default function Loginform({ setAuthenticated }) {
             <div className="mb-6">
               <label
                 className="block text-gray-700 font-medium mb-2"
-                htmlFor="username"
+                htmlFor="email"
               >
                 Username
               </label>
@@ -95,7 +95,7 @@ export default function Loginform({ setAuthenticated }) {
                 className="p-3 border border-gray-300 rounded w-full"
                 type="text"
                 placeholder="Enter your username"
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 

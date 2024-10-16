@@ -15,6 +15,9 @@ export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated}) 
     setAuthenticated(false);
     navigate("/login");
   }
+  function userProfilerender(){
+    navigate("/userProfile");
+  }
 
   return (
     <div className={`flex flex-col h-max-screen ${isOpen ? 'w-16' : 'w-12'} bg-purple-800 text-white transition-all duration-300`}>
@@ -41,8 +44,8 @@ export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated}) 
               <button className="p-2 rounded-lg hover:bg-purple-700 transition-colors">
                 <Home size={24} />
               </button>
-              <button className="p-2 rounded-lg hover:bg-purple-700 transition-colors">
-                <User size={24} />
+              <button className="p-2 rounded-lg hover:bg-purple-700 transition-colors" onClick={userProfilerender}>
+                <User size={24}  />
               </button>
               <button className="p-2 rounded-lg hover:bg-purple-700 transition-colors">
                 <Mail size={24} />
