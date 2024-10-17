@@ -3,25 +3,29 @@ import LeftSidebar from "./SidebarCom/LeftSidebar";
 import NavBar from "./DashboardSec/NavBar";
 import Todo from "./Cards/Todo";
 import RightSideBar from "./SidebarCom/RightSideCom";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function HomePage({ todos, isAuthenticated, setAuthenticated , setTodos }) {
+export default function HomePage({
+  todos,
+  isAuthenticated,
+  setAuthenticated,
+  setTodos,
+}) {
   const [searchquery, setSearchquery] = useState("");
   const [notification, setNotification] = useState("");
   const [filteredTodos, setFilteredTodos] = useState(todos);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   // Filter todos based on the search query (you may want to implement this)
   useEffect(() => {
-    const results = todos.filter(todo =>
+    const results = todos.filter((todo) =>
       todo.title.toLowerCase().includes(searchquery.toLowerCase())
     );
     setFilteredTodos(results);
   }, [searchquery, todos]);
 
-  function addproject(){
-    navigate("/createNewTask")
-    
+  function addproject() {
+    navigate("/createNewTask");
   }
 
   return (
@@ -46,8 +50,11 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated , se
                 <b>Project</b>
               </div>
               <div>
-                <button onClick={addproject} className="bg-[#744be4] rounded-3xl h-10 px-4 w-36 text-white">
-                  Create Project
+                <button
+                  onClick={addproject}
+                  className="bg-[#744be4] rounded-3xl h-10 px-4 w-36 text-white"
+                >
+                  Add Task
                 </button>
               </div>
             </div>
@@ -67,10 +74,12 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated , se
             </div>
             <div className="todo-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-2 overflow-y-auto h-[450px] scroll-container">
               {filteredTodos.length > 0 ? (
-                filteredTodos.map((todo) => <Todo key={todo.id} todo={todo} setTodos={setTodos} />)
+                filteredTodos.map((todo) => (
+                  <Todo key={todo.id} todo={todo} setTodos={setTodos} />
+                ))
               ) : (
                 <div className="col-span-full text-center">
-                  <h2>No task to complete</h2>
+                  <h2>Task Not found </h2>
                 </div>
               )}
             </div>
@@ -79,7 +88,6 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated , se
           {/* Right Sidebar */}
           <div className="lg:w-1/4 w-full">
             <RightSideBar todos={todos} />
-            
           </div>
         </div>
       </div>

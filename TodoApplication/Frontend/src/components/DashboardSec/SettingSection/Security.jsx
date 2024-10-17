@@ -54,7 +54,7 @@ function ChangeName({ setOperation }) {
           type="submit"
           className="mb-4 p-2 bg-gray-600 text-white rounded-3xl hover:bg-gray-700 transition duration-200"
         >
-          Change password
+          Update Name
         </button>
       </form>
     </div>
