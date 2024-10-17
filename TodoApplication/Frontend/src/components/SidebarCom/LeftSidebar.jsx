@@ -18,6 +18,9 @@ export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated}) 
   function userProfilerender(){
     navigate("/userProfile");
   }
+  function settingRenderer(){
+    navigate("/setting");
+  }
 
   return (
     <div className={`flex flex-col h-max-screen ${isOpen ? 'w-16' : 'w-12'} bg-purple-800 text-white transition-all duration-300`}>
@@ -56,7 +59,7 @@ export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated}) 
               <button className="p-2 rounded-lg hover:bg-purple-700 transition-colors">
                 <FileText size={24} />
               </button>
-              <button className="p-2 rounded-lg hover:bg-purple-700 transition-colors">
+              <button onClick={settingRenderer} className="p-2 rounded-lg hover:bg-purple-700 transition-colors">
                 <Settings size={24} />
               </button>
             </nav>
