@@ -6,6 +6,7 @@ import ForgetPassword from "./components/ForgetPassword";
 import ResetFormComponent from "./components/ResetFormComponent";
 import UserProfile from "./components/DashboardSec/UserProfile";
 import Setting from "./components/DashboardSec/SettingCom";
+import Createtask from "./components/Functinality/Newtask";
 
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Createtodo"));
@@ -108,6 +109,14 @@ function App() {
               </Suspense>
             }
           />
+          <Route
+            path="/Homepage"
+            element={
+              <Suspense fallback={"Loading..."}>
+               <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} setTodos={setTodos}/>
+              </Suspense>
+            }
+          />
            <Route
             path="/userProfile"
             element={
@@ -140,6 +149,14 @@ function App() {
             element={
               <Suspense fallback={"Loading..."}>
                 <ForgetPassword />
+              </Suspense>
+            }
+          />
+           <Route
+            path="/createNewTask"
+            element={
+              <Suspense fallback={"Loading..."}>
+                <Createtask setTodos={setTodos}/>
               </Suspense>
             }
           />

@@ -3,12 +3,13 @@ import LeftSidebar from "./SidebarCom/LeftSidebar";
 import NavBar from "./DashboardSec/NavBar";
 import Todo from "./Cards/Todo";
 import RightSideBar from "./SidebarCom/RightSideCom";
-import TimeCom from "./Cards/Tasks/TimeComp";
+import {  useNavigate } from "react-router-dom";
 
-export default function HomePage({ todos, isAuthenticated, setAuthenticated }) {
+export default function HomePage({ todos, isAuthenticated, setAuthenticated , setTodos }) {
   const [searchquery, setSearchquery] = useState("");
   const [notification, setNotification] = useState("");
   const [filteredTodos, setFilteredTodos] = useState(todos);
+  const navigate=useNavigate();
 
   // Filter todos based on the search query (you may want to implement this)
   useEffect(() => {
@@ -17,6 +18,11 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated }) {
     );
     setFilteredTodos(results);
   }, [searchquery, todos]);
+
+  function addproject(){
+    navigate("/createNewTask")
+    
+  }
 
   return (
     <div className="flex bg-[#f2f6fe] min-h-screen border-box">
@@ -40,7 +46,7 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated }) {
                 <b>Project</b>
               </div>
               <div>
-                <button className="bg-[#744be4] rounded-3xl h-10 px-4 w-36 text-white">
+                <button onClick={addproject} className="bg-[#744be4] rounded-3xl h-10 px-4 w-36 text-white">
                   Create Project
                 </button>
               </div>
@@ -61,7 +67,7 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated }) {
             </div>
             <div className="todo-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-2 overflow-y-auto h-[450px] scroll-container">
               {filteredTodos.length > 0 ? (
-                filteredTodos.map((todo) => <Todo key={todo.id} todo={todo} />)
+                filteredTodos.map((todo) => <Todo key={todo.id} todo={todo} setTodos={setTodos} />)
               ) : (
                 <div className="col-span-full text-center">
                   <h2>No task to complete</h2>
@@ -73,7 +79,7 @@ export default function HomePage({ todos, isAuthenticated, setAuthenticated }) {
           {/* Right Sidebar */}
           <div className="lg:w-1/4 w-full">
             <RightSideBar todos={todos} />
-            {/* <TimeCom /> */}
+            
           </div>
         </div>
       </div>

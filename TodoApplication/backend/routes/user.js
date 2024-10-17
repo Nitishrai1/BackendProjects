@@ -222,6 +222,52 @@ router.get("/userProfile",userauth,async (req,res)=>{
 })
 
 
+router.post("/changepassword",userauth,async (req,res)=>{
+  const {newpassword}=req.body;
+
+  const id=req.userId;
+  try{
+    console.log(`newpassword ${newpassword}`)
+    const user=await User.findOne({
+      _id:id
+    })
+    if(!user){
+      return res.status(404).json({msg:"User does not exits"});
+    }
+
+    user.password=newpassword;
+    await user.save();
+    return res.status(200).json({msg:"Password changed succesfully"})
+  }catch(err){
+    return res.status(500).json({msg:"Internal server error"});
+  }
+})
+
+router.post("/changename",userauth, async(req,res)=>{
+  const id=req.userId;
+  const {newusername}=req.body
+
+  try{
+    const user=await User.findOne({
+      _id:id,
+
+    })
+    if(!user){
+      return res.status(404).json({msg:"user does not exist"});
+    }
+
+    user.username=newusername;
+    user.save();
+    return res.status(200).json({msg:"Name updated succesfully"});
+
+  }catch(err){
+    // console.log("error in changing th name");
+
+    return res.status(500).json({msg:"Internal server error",err})
+
+  }
+
+})
 
 
 
@@ -232,7 +278,9 @@ router.get("/userProfile",userauth,async (req,res)=>{
 
 
 
-router.post("/todo", userauth, async function (req, res) {
+
+
+router.post("/newtask", userauth, async function (req, res) {
   const { title, description, completed } = req.body;
   const id = req.userId;
   console.log(`id is ${id}`);
@@ -259,10 +307,13 @@ router.post("/todo", userauth, async function (req, res) {
           completed:false,
         },
       },
-    }
+    },
+    { new: true } // ye ensures karta hai  that the updated document is returned
   ); //matlab user nam ka koi user nikalet hei db me se or fir uske todo me data dalte hai
+ 
+  const updatedTask=user1.todos;
 
-  return res.status(200).json({ msg: "Todos updated succesfull" });
+  return res.status(200).json({ msg: "Todos updated succesfull",updatedTask });
 });
 
 
@@ -277,9 +328,9 @@ router.put("/completed", userauth, async function (req, res) {
   // ye to simple hai yek todo ki id milegai usko delete parna hai bass
   const id = req.userId; //ye hai user ki id
   // ab hmako particular todo ko nikalna hai
-  const todo = req.body.id; //ye hai perticular todo ki id
+  const todoId = req.body.id; //ye hai perticular todo ki id
   // ab hamko id nam ke user ka todo id wala object me completed true mark karna hai
- console.log(`Todo id is ${todo}`)
+ console.log(`Todo id is ${todoId}`)
  console.log(`user id is ${id}`)
  
 
@@ -290,7 +341,7 @@ router.put("/completed", userauth, async function (req, res) {
     if (!user) {
       return res.status(401).json({ msg: "User not found" });
     }
-    const particulartodo = user.todos.id(todo);
+    const particulartodo = user.todos.id(todoId);
     
     if (!particulartodo) {
       return res.status(404).json({ msg: "Todo not found" });
@@ -300,9 +351,10 @@ router.put("/completed", userauth, async function (req, res) {
     particulartodo.completed = true;
 
     await user.save();
+    const updatedtask=user.todos;
 
 
-    return res.status(200).json({ msg: "Task completed" });
+    return res.status(200).json({ msg: "Task completed",updatedtask });
   } catch (err) {
     console.log(err);
     return res.status(411).json({ msg: "Internal server error" });

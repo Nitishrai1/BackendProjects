@@ -1,5 +1,7 @@
-export default async function updatetodo(id){
+export default async function updatetodo(id,setTodos){
     try {
+        console.log(`Todo id in update function is ${id}`);
+
         const token = localStorage.getItem("token");
         console.log(token);
         const response = await fetch("http://localhost:3000/user/completed", {
@@ -13,6 +15,7 @@ export default async function updatetodo(id){
         const data = await response.json();
         if (response.ok) {
           alert(`Result is ${data.msg}`);
+          setTodos(data.updatedtask)
           return true;
         } else {
           alert(`Error: ${data.msg || "Could not update todo"}`);

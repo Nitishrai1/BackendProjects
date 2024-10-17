@@ -23,7 +23,7 @@ export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated}) 
   }
 
   return (
-    <div className={`flex flex-col h-max-screen ${isOpen ? 'w-16' : 'w-12'} bg-purple-800 text-white transition-all duration-300`}>
+    <div className={`flex flex-col h-max-screen ${isOpen ? 'w-16' : 'w-12'} bg-[#1e0059] text-white transition-all duration-300`}>
       <div className="flex-1 flex flex-col justify-between py-4">
         <div className="space-y-4">
           {/* Logo / Toggle Button */}

@@ -2,13 +2,14 @@ import { ThumbsUp, MessageCircle } from 'lucide-react'
 
 import updatetodo from "../Functinality/UpdateTodo";
 
-export default function Todo({  todo = {} }) {
+export default function Todo({  todo,setTodos}) {
   const { title = 'Untitled Task', description = 'No description provided' } = todo || {};
 
-   const  markasComplet = async (id)=>{
+   const  markasComplete = async (id)=>{
     try{
-        const isupdate=await updatetodo(id);
-        if(isupdate){
+        const isupdated=await updatetodo(id,setTodos);
+        // console.log(`Todo id in frontend is ${todo._id}`);
+        if(isupdated){
             // jo fetch todo hai usko update kar do
         }
 
@@ -48,7 +49,7 @@ export default function Todo({  todo = {} }) {
         <button className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition">
           Edit
         </button>
-        <button onClick={()=>markasComplet(todo._id)} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
+        <button onClick={()=>markasComplete(todo._id)} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
           Mark as Completed
         </button>
       </div>
