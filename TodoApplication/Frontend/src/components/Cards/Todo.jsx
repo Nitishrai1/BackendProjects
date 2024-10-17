@@ -1,58 +1,72 @@
-import { ThumbsUp, MessageCircle } from 'lucide-react'
+import { ThumbsUp, MessageCircle } from "lucide-react";
 
 import updatetodo from "../Functinality/UpdateTodo";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Todo({  todo,setTodos}) {
-  const { title = 'Untitled Task', description = 'No description provided' } = todo || {};
+export default function Todo({ todo, setTodos }) {
+  const { title = "Untitled Task", description = "No description provided" } =
+    todo || {};
+    const navigate=useNavigate();
 
-   const  markasComplete = async (id)=>{
-    try{
-        const isupdated=await updatetodo(id,setTodos);
-        // console.log(`Todo id in frontend is ${todo._id}`);
-        if(isupdated){
-            // jo fetch todo hai usko update kar do
-        }
+    const [edited,setedited]=useState({todo});
 
-    }catch(err){
-        console.log("errror in marking the todo as completed")
 
+  const markasComplete = async (id) => {
+    try {
+      const isupdated = await updatetodo(id, setTodos);
+      // console.log(`Todo id in frontend is ${todo._id}`);
+      if (isupdated) {
+        // jo fetch todo hai usko update kar do
+        
+      }
+    } catch (err) {
+      console.log("errror in marking the todo as completed");
     }
-
-
+  };
+  function handleEdit() {
+    navigate('/editTask', {
+      state: { id: todo.id }
+    });
   }
 
   return (
     <div className="bg-white shadow-lg rounded-3xl p-6 my-4 mx-2 transition-transform transform hover:scale-105 border border-gray-200">
       <h3 className="text-xl font-semibold mb-1">{title}</h3>
       <p className="text-sm text-gray-500 mb-4">{description}</p>
-      
-      <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-        <div className="bg-purple-600 h-2.5 rounded-full" style={{ width: '50%' }}></div>
+
+      <div className="rounded-2xl  text-black font-semibold">
+        Status:
+        <button
+          className={`${
+            todo.status === "started"
+              ? "bg-blue-200 text-blue-800"
+              : todo.status === "ongoing"
+              ? "bg-yellow-200 text-yellow-800"
+              : "bg-green-200 text-green-800"
+          } rounded-3xl p-2 ml-2 w-1/3 text-[#1e0059]`}
+        >
+          {todo.status}
+        </button>
       </div>
-      
-      <div className="flex justify-between items-center">
-       
-        
-        <div className="flex space-x-4">
-          <button className="flex items-center text-gray-500 hover:text-gray-700">
-            <ThumbsUp className="w-5 h-5 mr-1" />
-            <span>6</span>
-          </button>
-          <button className="flex items-center text-gray-500 hover:text-gray-700">
-            <MessageCircle className="w-5 h-5 mr-1" />
-            <span>4</span>
-          </button>
-        </div>
-      </div>
-      
+
       <div className="flex justify-between mt-4">
-        <button className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition">
+        <button onClick={handleEdit} className="bg-purple-600 text-white py-2 px-4 rounded-3xl hover:bg-purple-700 transition">
           Edit
         </button>
-        <button onClick={()=>markasComplete(todo._id)} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
-          Mark as Completed
-        </button>
+        {todo.status == "completed" ? (
+          <button className="bg-green-500 text-[#1e0059] py-2 px-4  rounded-3xl hover:bg-green-600 transition">
+            Task Completed
+          </button>
+        ) : (
+          <button
+            onClick={() => markasComplete(todo._id)}
+            className="bg-red-500 text-white py-2 px-4  rounded-3xl hover:bg-red-600 transition"
+          >
+            Mark as Completed
+          </button>
+        )}
       </div>
     </div>
-  )
+  );
 }

@@ -346,9 +346,10 @@ router.put("/completed", userauth, async function (req, res) {
     if (!particulartodo) {
       return res.status(404).json({ msg: "Todo not found" });
     }
-   
+    particulartodo.status="completed";
 
     particulartodo.completed = true;
+
 
     await user.save();
     const updatedtask=user.todos;

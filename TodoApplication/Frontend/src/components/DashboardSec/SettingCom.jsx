@@ -62,7 +62,7 @@ export default function Setting({userdata}){
             </ul>
           </div>
     
-          {/* Main Content */}
+          
           <div className="md:w-3/4 bg-gray-800 ml-0 md:ml-6 mt-6 md:mt-0 p-6 rounded-lg">
             <div className="space-y-6">
             <h3 className="text-lg font-semibold mb-2">{activesection}</h3>

@@ -9,8 +9,8 @@ export default function RightSideBar({ todos }) {
 
   return (
     <div className="bg-white p-5 rounded-3xl shadow flex flex-col h-full">
-      <div className="bg-yellow-300 flex flex-col w-full h-full">
-        <div className="bg-green-300 w-full h-1/4 rounded-lg">
+      <div className="bg-white flex flex-col w-full h-full">
+        <div className="bg-white w-full h-1/4 rounded-lg">
           <div className="bg-[#f2f6fe] rounded-2xl m-5 p-2 flex items-center">
             <div>
               <p className="text-sm">Selected</p>
@@ -26,7 +26,7 @@ export default function RightSideBar({ todos }) {
         <div className="bg-white w-full h-1/2 rounded-lg p-2">
           <DoununtCom todos={todos} />
         </div>
-        <div className="bg-orange-300 w-full h-1/4 flex flex-col rounded-lg p-2">
+        <div className="bg-white w-full h-1/4 flex flex-col rounded-lg p-2">
           <h2 className="text-lg font-semibold poppins-regular">Progress</h2>
           <Alltask todos={todos} />
           {/* <TimeCom /> */}

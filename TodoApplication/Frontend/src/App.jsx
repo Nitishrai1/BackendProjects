@@ -7,6 +7,7 @@ import ResetFormComponent from "./components/ResetFormComponent";
 import UserProfile from "./components/DashboardSec/UserProfile";
 import Setting from "./components/DashboardSec/SettingCom";
 import Createtask from "./components/Functinality/Newtask";
+import Edittask from "./components/Functinality/EditTask";
 
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Createtodo"));
@@ -115,6 +116,14 @@ function App() {
               <Suspense fallback={"Loading..."}>
                <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} setTodos={setTodos}/>
               </Suspense>
+            }
+          />
+           <Route
+            path="/editTask"
+            element={
+              <Suspense fallback={"Loading..."}>
+                <Edittask />
+               </Suspense>
             }
           />
            <Route

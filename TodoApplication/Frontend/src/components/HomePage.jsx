@@ -27,6 +27,15 @@ export default function HomePage({
   function addproject() {
     navigate("/createNewTask");
   }
+  function updateCompleted(){
+    setFilteredTodos(todos.filter((todo)=>todo.status=="completed"))
+  }
+  function updateStarted(){
+    setFilteredTodos(todos.filter((todo)=>todo.status=="started"))
+  }
+  function updateOngoing(){
+    setFilteredTodos(todos.filter((todo)=>todo.status=="ongoing"))
+  }
 
   return (
     <div className="flex bg-[#f2f6fe] min-h-screen border-box">
@@ -44,8 +53,8 @@ export default function HomePage({
         />
         <div className="flex flex-col lg:flex-row gap-4 p-5">
           {/* Main Content Area */}
-          <div className="flex-1 p-5 rounded-3xl bg-white h-[650px] w-full lg:w-[800px] overflow-hidden">
-            <div className="flex justify-between p-5">
+          <div className="flex-1 p-2 rounded-3xl bg-white h-[650px] w-full lg:w-[800px] overflow-hidden">
+            <div className="flex justify-between p-2">
               <div className="poppins-regular text-lg">
                 <b>Project</b>
               </div>
@@ -61,18 +70,18 @@ export default function HomePage({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-2 poppins-medium">
               <div className="flex justify-between">
                 <div>Started</div>
-                <button className="text-lg">+</button>
+                <button onClick={updateStarted}  className="text-lg">+</button>
               </div>
               <div className="flex justify-between">
                 <div>Ongoing</div>
-                <button className="text-lg">+</button>
+                <button  onClick={updateOngoing}  className="text-lg">+</button>
               </div>
               <div className="flex justify-between">
                 <div>Completed</div>
-                <button className="text-lg">+</button>
+                <button onClick={updateCompleted} className="text-lg">+</button>
               </div>
             </div>
-            <div className="todo-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-2 overflow-y-auto h-[450px] scroll-container">
+            <div className="todo-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-2 overflow-y-auto h-[520px] scroll-container">
               {filteredTodos.length > 0 ? (
                 filteredTodos.map((todo) => (
                   <Todo key={todo.id} todo={todo} setTodos={setTodos} />
