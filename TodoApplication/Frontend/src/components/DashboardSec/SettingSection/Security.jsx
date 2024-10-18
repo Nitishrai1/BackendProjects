@@ -32,9 +32,9 @@ function ChangeName({ setOperation }) {
     <div className="bg-gray-800 p-4 rounded-lg">
       <button
         onClick={() => setOperation("Default")}
-        className="mb-4 p-2 bg-gray-600 text-white rounded-3xl hover:bg-gray-700 transition duration-200"
+        className="mb-4 p-2 bg-gray-600 text-white rounded-3xl w-[80px] hover:bg-gray-700 transition duration-200"
       >
-        Back to Security Settings
+        Back
       </button>
 
       <h2 className="text-lg font-semibold mb-4">New Name</h2>

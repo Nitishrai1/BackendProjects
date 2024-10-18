@@ -8,7 +8,7 @@ export default function Alltask({ todos }) {
   const statusItems = [
     { title: "TOTAL", count: all, color: "bg-blue-500" },
     { title: "Done", count: completed, color: "bg-orange-500" },
-    { title: "Going On", count: remaining, color: "bg-pink-500" },
+    { title: "OnGoing", count: remaining, color: "bg-pink-500" },
   ];
 
   return (
