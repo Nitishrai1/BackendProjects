@@ -8,6 +8,33 @@ export default function NavBarSection({
   setSearchquery,
 }) {
   const timerRef = useRef(null);
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState('/placeholder.svg'); // Default image
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    setPreviewImage(URL.createObjectURL(file)); // Display the image preview before upload
+  };
+
+  const handleImageUpload = async () => {
+    const formData = new FormData();
+    formData.append('image', image);
+
+    try {
+      const response = await axios.post('http://localhost:5000/upload-profile-picture', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setPreviewImage(response.data.imageUrl); // Update to the uploaded image URL from Cloudinary
+    } catch (error) {
+      console.error('Error uploading image', error);
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   useEffect(() => {
     if (searchquery.trim() !== "") {
@@ -30,13 +57,16 @@ export default function NavBarSection({
   async function updateFilteredTodo() {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:3000/user/Search/${searchquery}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          authorization: `${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/user/Search/${searchquery}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: `${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -72,19 +102,45 @@ export default function NavBarSection({
             <button className="p-2 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <Bell className="h-6 w-6" />
             </button>
-            <button className="ml-4 p-2 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <Calendar className="h-6 w-6" />
-            </button>
-            <div className="ml-4 flex items-center">
+
+            <div className="ml-4 flex items-center relative">
               <img
-                className="h-8 w-8 rounded-full"
-                src="/placeholder.svg?height=32&width=32"
+                className="h-8 w-8 rounded-full cursor-pointer"
+                src={previewImage}
                 alt="User profile"
+                onClick={toggleDropdown}
               />
               <span className="ml-2 text-sm font-medium text-gray-700">
                 Sullivan
               </span>
-              <ChevronDown className="ml-1 h-4 w-4 text-gray-400" />
+              <div className="relative">
+                <button
+                  onClick={toggleDropdown}
+                  className="ml-2 text-sm font-medium text-gray-700 focus:outline-none"
+                >
+                  ▼
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+                    <div className="py-1">
+                      <label className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">
+                        Upload Image
+                        <input
+                          type="file"
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                      <button
+                        onClick={handleImageUpload}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
+                      >
+                        Save Image
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

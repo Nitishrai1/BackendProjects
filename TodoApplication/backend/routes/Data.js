@@ -6,6 +6,18 @@ const router = Router();
 
 
 
+const upload = require('../utils/multter'); // Path to your multer config file
+
+router.post('/upload-profile-picture', upload.single('image'), (req, res) => {
+  try {
+    const imageUrl = req.file.path; // This will be the URL of the uploaded image from Cloudinary
+    res.status(200).json({ imageUrl });
+  } catch (error) {
+    res.status(500).json({ error: 'Image upload failed!' });
+  }
+});
+
+module.exports = router;
 
 
 
