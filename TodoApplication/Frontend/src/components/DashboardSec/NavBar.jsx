@@ -9,33 +9,9 @@ export default function NavBarSection({
 }) {
   const timerRef = useRef(null);
   const [image, setImage] = useState(null);
+  // const [userImage,setUserimage]=useState('');
   const [previewImage, setPreviewImage] = useState('/placeholder.svg'); // Default image
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setPreviewImage(URL.createObjectURL(file)); // Display the image preview before upload
-  };
-
-  const handleImageUpload = async () => {
-    const formData = new FormData();
-    formData.append('image', image);
-
-    try {
-      const response = await axios.post('http://localhost:5000/upload-profile-picture', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      setPreviewImage(response.data.imageUrl); // Update to the uploaded image URL from Cloudinary
-    } catch (error) {
-      console.error('Error uploading image', error);
-    }
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
   useEffect(() => {
     if (searchquery.trim() !== "") {
       updateFilteredTodo();
@@ -53,6 +29,75 @@ export default function NavBarSection({
       console.log(`Search query updated to: ${query}`);
     }, 500);
   }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    setPreviewImage(URL.createObjectURL(file)); // Display the image preview before upload
+  };
+
+  const handleImageUpload = async () => {
+    const formData = new FormData();
+    formData.append('image', image);
+
+    try {
+      const response = await fetch('http://localhost:3000/user/Search/upload-profile-picture',  {
+        method:'POST',
+        body:formData,
+      });
+      const data=await response.json();
+      if (response.ok) {  //if else is liye laga lo ki hab ok ayega tabhi set hoga url
+        setPreviewImage(data.imageUrl);
+        console.log(`image link in the frontend is ${data.imageUrl}`);
+        const userimage = await updateuserprofile({ userImage: data.imageUrl }); 
+        if (!userimage.ok) {
+          alert(`Error in saving the image link in the database`);
+        } else {
+          alert(`Image link saved in the database successfully`);
+        }
+      } else {
+        alert(`Error uploading image: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('Error uploading image inn cloud', error);
+    }
+  };
+
+  async function updateuserprofile({userImage}) {
+    try{
+      const token=localStorage.getItem('token');
+      console.log(`image link in the update frontedn ${userImage}`)
+      const response=await fetch("http://localhost:3000/user/updatePhoto",{
+        method:'POST',
+        headers:{
+          'Content-Type':"application/json",
+          authorization:`${token}`,
+        },
+        body:JSON.stringify({profilepicture:userImage}),
+
+      });
+      if(!response.ok){
+        // console.log("error in uplaod the image");
+        alert("Error in uploading image please try again");
+      }
+      const res=await response.json();
+      alert(res.msg);
+    }catch(err){
+      console.log("Error in the backend");
+      alert(`Error ${err}`);
+      
+
+    }
+
+    
+  }
+
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+
 
   async function updateFilteredTodo() {
     const token = localStorage.getItem("token");

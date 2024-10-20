@@ -10,10 +10,13 @@ const upload = require('../utils/multter'); // Path to your multer config file
 
 router.post('/upload-profile-picture', upload.single('image'), (req, res) => {
   try {
+    console.log(`inside the upload api`)
     const imageUrl = req.file.path; // This will be the URL of the uploaded image from Cloudinary
+    console.log(`the image url in api is ${imageUrl}`)
     res.status(200).json({ imageUrl });
   } catch (error) {
-    res.status(500).json({ error: 'Image upload failed!' });
+    console.error('Error uploading image:', error); // Log the error object
+    res.status(500).json({ error: 'Image upload failed!', details: error.message });
   }
 });
 

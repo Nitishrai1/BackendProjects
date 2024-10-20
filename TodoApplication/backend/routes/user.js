@@ -221,6 +221,29 @@ router.get("/userProfile",userauth,async (req,res)=>{
   }
 })
 
+// update profile picture
+
+router.post("/updatePhoto",userauth,async (req,res)=>{
+  const {profilepicture}=req.body;
+
+  const id=req.userId;
+  try{
+    console.log(`newimage ${profilepicture}`)
+    const user=await User.findOne({
+      _id:id
+    })
+    if(!user){
+      return res.status(404).json({msg:"User does not exits"});
+    }
+
+    user.imageLink=profilepicture;
+    await user.save();
+    return res.status(200).json({msg:"profilepicture uploaded succesfully"})
+  }catch(err){
+    return res.status(500).json({msg:"Internal server error"});
+  }
+})
+
 
 router.post("/changepassword",userauth,async (req,res)=>{
   const {newpassword}=req.body;
