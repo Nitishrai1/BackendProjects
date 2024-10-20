@@ -5,7 +5,7 @@ import Alltask from "../Cards/Tasks/Alltask";
 import TimeCom from "../Cards/Tasks/TimeComp";
 
 export default function RightSideBar({ todos }) {
-  const [accuracy, setAccuracy] = useState();
+  
 
   return (
     <div className="bg-white p-5 rounded-3xl shadow flex flex-col h-full">

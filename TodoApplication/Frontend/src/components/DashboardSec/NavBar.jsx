@@ -187,7 +187,10 @@ export default function NavBarSection({
                     </div>
                   </div>
                 )}
+                
               </div>
+              <div className="tasky-heading text-lg m-6 rounded-3xl font-bold text-indigo-600 cursor-pointer">Tasky</div>
+
             </div>
           </div>
         </div>

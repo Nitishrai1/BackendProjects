@@ -59,4 +59,15 @@
     font-weight: 400;
     font-style: italic;
   }
-  
+
+  .tasky-heading::after {
+    content: '';
+    display: block;
+    width: 50%; /* Adjust the width of the line as needed */
+    height: 2px; /* Adjust the thickness of the line */
+    background: linear-gradient(to right, #4f46e5 50%, transparent 50%);
+    background-size: 10px 2px; /* Creates a wavy or zigzag pattern */
+    margin: 8px auto 0; /* Adjust spacing as needed */
+    transform: skewX(-10deg); /* Adds a slight angle for a hand-drawn effect */
+}
+
