@@ -20,17 +20,34 @@ function App() {
   const [isAuthenticated, setAuthenticated] = useState(null);
   const [todos, setTodos] = useState([]);
   const [userdata,setUserdata]=useState({});
+  const [isLoading,setIsloading]=useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setAuthenticated(true);
-      fetchTodos(token); // Fetch todos if user is authenticated
-      fetchUserData(token);
+      fetchData(token);
+      
     } else {
       setAuthenticated(false);
+      setIsloading(false);
     }
-  }, []);
+  }, [isAuthenticated]);
+
+  // loading ka logic hai niche jab tak fetch nahi hoga logind show hoga
+  const fetchData=async (token)=>{
+    try{
+      setIsloading(true);
+      await fetchTodos(token);
+      await fetchUserData(token);
+      setIsloading(false)
+
+    }catch(err){
+      console.log(`Error fetching data: ${err}`);
+      setIsloading(false);
+
+    }
+  }
 
   const fetchTodos = async (token) => {
     try {
@@ -77,11 +94,11 @@ function App() {
 
 
   }
-
-  if (isAuthenticated == null) {
-    return <div>Loading authentication status...</div>;
+  if (isAuthenticated == null || isLoading) {
+    return <div>Loading authentication status and data...</div>;
   }
 
+ 
   return (
     <div>
       <BrowserRouter>
@@ -93,7 +110,7 @@ function App() {
             element={
               isAuthenticated ? (
                 <Suspense fallback={"Loading..."}>
-                  <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} userdata={userdata}/>
+                  <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} userdata={userdata} setUserdata={setUserdata}/>
                 </Suspense>
               ) : (
                 <Suspense fallback={"Loading..."}>

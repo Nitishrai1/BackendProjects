@@ -2,7 +2,7 @@ import  { useState } from 'react'
 import { Home, User, Mail, Clock, FileText, Settings, LogOut, Menu } from 'lucide-react'
 import {  useNavigate } from 'react-router-dom'
 
-export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated}) {
+export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated ,setUserdata,setFilteredTodos}) {
   const [isOpen, setIsOpen] = useState(true)
   const navigate=useNavigate();
 
@@ -13,6 +13,8 @@ export default function CollapsibleSidebar ({isAutehnticated,setAuthenticated}) 
   function Logout(){
     localStorage.removeItem("token");
     setAuthenticated(false);
+    setUserdata({});
+    setFilteredTodos([]);
     navigate("/login");
   }
   function userProfilerender(){

@@ -10,7 +10,8 @@ export default function HomePage({
   isAuthenticated,
   setAuthenticated,
   setTodos,
-  userdata
+  userdata,
+  setUserdata
 }) {
   const [searchquery, setSearchquery] = useState("");
   // const [notification, setNotification] = useState("");
@@ -43,6 +44,9 @@ export default function HomePage({
       <LeftSidebar
         isAuthenticated={isAuthenticated}
         setAuthenticated={setAuthenticated}
+        setFilteredTodos={setFilteredTodos}
+        setUserdata={setUserdata}
+
       />
 
       <div className="flex-1">
