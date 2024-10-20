@@ -1,6 +1,7 @@
 
 // implemeting the logic of sending notification using nodemailer library
 
+require('dotenv').config();
 const nodemailer=require("nodemailer");
 
 const sendSignupEmail=async(email)=>{
@@ -9,7 +10,7 @@ const sendSignupEmail=async(email)=>{
       service: 'Gmail', 
             auth: {
                 user: 'nitishraigkp007@gmail.com', // Replace with your email
-                pass: 'qxnjwvtcixllmtnq' // Replace with your email password or app-specific password
+                pass: process.env.NODEMAILER_PASS_KEY // Replace with your email password or app-specific password
             }
     })
     const mailoption={
@@ -20,7 +21,7 @@ const sendSignupEmail=async(email)=>{
     }
 
     await transporter.sendMail(mailoption);
-    console.log(`signup email succesfull`);
+    // console.log(`signup email succesfull`);
   }catch(err){
     console.log(`error occured in nodemailer ${err}`);
 
@@ -38,7 +39,7 @@ const sendResetPassword=async (email,resetToken)=>{
       service:'Gmail',
           auth:{
             user:'nitishraigkp007@gmail.com',
-            pass:'qxnjwvtcixllmtnq'
+            pass:process.env.NODEMAILER_PASS_KEY
           }
 
     })
@@ -76,7 +77,7 @@ const sendLoggedInNotification=async(email)=>{
       service:'Gmail',
       auth:{
         user:'nitishraigkp007@gmail.com',
-        pass:'qxnjwvtcixllmtnq'
+        pass:process.env.NODEMAILER_PASS_KEY
 
       }
     });

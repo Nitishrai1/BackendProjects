@@ -1,5 +1,10 @@
+
+require('dotenv').config()
 const mongoose=require("mongoose");
-mongoose.connect('mongodb://localhost:27017/todo-app');
+mongoose.connect(process.env.MONGODB_URL)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('MongoDB connection error:', error));
+  
 const UserSchema = new mongoose.Schema({
     username: { type: String },
     email: { type: String, required: true },

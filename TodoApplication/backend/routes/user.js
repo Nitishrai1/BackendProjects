@@ -1,10 +1,11 @@
+require('dotenv').config();
 const { Router } = require("express");
 const User = require("../db");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 const jwt = require("jsonwebtoken");
 const { createTodo, updateTodo,uservalidation, usernamevalidated } = require("../utils");
-const jwtkey = "fuckoffhacker";
+const jwtkey = process.env.JWT_TOKEN;
 const {sendSignupEmail, sendLoggedInNotification}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
 const {sendResetPassword}=require("../middlewire/emailnotification")
@@ -84,7 +85,7 @@ router.post("/signin", async (req, res) => {
 // logic for forget password
 router.post('/forgot-password',async(req,res)=>{
   const {email}=req.body;
-  console.log(email);
+  // console.log(email);
 
   try{
     const user=await User.findOne({
@@ -101,7 +102,7 @@ router.post('/forgot-password',async(req,res)=>{
 
     return res.status(200).json({ message: 'Password reset email sent successfully',resetToken });
   }catch(err){
-    console.log(`Error occured in the forgot password logic ${err}`);
+    // console.log(`Error occured in the forgot password logic ${err}`);
     return res.status(500).json({msg:"Error in sending teh reset email please try again"})
   }
 
@@ -114,7 +115,7 @@ router.post('/reset-password',async(req,res)=>{
   
   const {password,token}=req.body;
   try{
-    console.log(`Reset logic called with the resettoken as ${token} ans new password is ${password}`)
+    // console.log(`Reset logic called with the resettoken as ${token} ans new password is ${password}`)
     const user=await User.findOne({
       resetPasswordToken:token,
       resetPasswordExpires:{ $gt: Date.now() },  //check the token has not been expired
@@ -129,10 +130,10 @@ router.post('/reset-password',async(req,res)=>{
     user.resetPasswordExpires=undefined;
     user.resetPasswordToken=undefined;
     await user.save();
-    console.log("password has been updated successfully")
+    // console.log("password has been updated successfully")
     res.status(200).json({ message: 'Password has been reset successfully' });
   }catch(err){
-    console.log("Error in the reset token route",err);
+    // console.log("Error in the reset token route",err);
     return res.status(500).json({message:"Internal server error in the reset link of the token validation"})
   }
 
@@ -165,7 +166,7 @@ router.get("/todos", userauth, async function (req, res) {
     });
     return res.json({msg:"Todo fetched succesfully ",todos:finaltodo})
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({ msg: "Error in fetching the data" });
   }
 });
@@ -185,10 +186,10 @@ router.get("/alltodos",userauth,async function(req,res){
       return res.status(401).json({msg:"User does not exist"});
     }
     const todos=user.todos;
-    console.log(todos);
+    // console.log(todos);
     return res.json({msg:"All todo fetched successfull",todos:todos})
   }catch(err){
-    console.log("Error occured in fetching the all todos from the mongodb")
+    // console.log("Error occured in fetching the all todos from the mongodb")
     return res.status(500).json({msg:"Internal server error"});
   }
 
@@ -198,12 +199,12 @@ router.get("/userProfile",userauth,async (req,res)=>{
   const id=req.userId;
 
   try{
-      console.log(`In the profile route`)
+      // console.log(`In the profile route`)
       const user=await User.findOne({
           _id:id
       })
       if(!user){
-          console.log("user does not exist");
+          // console.log("user does not exist");
           return res.status(404).json({msg:"user does not exist "});
       }
       const userProfile={
@@ -215,7 +216,7 @@ router.get("/userProfile",userauth,async (req,res)=>{
       return res.status(200).json({msg:`User data are`,userProfile})
 
   }catch(err){
-      console.log(`Error in getting the data of the user `);
+      // console.log(`Error in getting the data of the user `);
       return res.status(500).json({msg:"Internal server error"});
 
   }
@@ -228,7 +229,7 @@ router.post("/updatePhoto",userauth,async (req,res)=>{
 
   const id=req.userId;
   try{
-    console.log(`newimage ${profilepicture}`)
+    // console.log(`newimage ${profilepicture}`)
     const user=await User.findOne({
       _id:id
     })
@@ -250,7 +251,7 @@ router.post("/changepassword",userauth,async (req,res)=>{
 
   const id=req.userId;
   try{
-    console.log(`newpassword ${newpassword}`)
+    // console.log(`newpassword ${newpassword}`)
     const user=await User.findOne({
       _id:id
     })
@@ -306,7 +307,7 @@ router.post("/changename",userauth, async(req,res)=>{
 router.post("/newtask", userauth, async function (req, res) {
   const { title, description, completed } = req.body;
   const id = req.userId;
-  console.log(`id is ${id}`);
+  // console.log(`id is ${id}`);
 
   const newtodo = createTodo.safeParse({
     title,
@@ -353,8 +354,8 @@ router.put("/completed", userauth, async function (req, res) {
   // ab hmako particular todo ko nikalna hai
   const todoId = req.body.id; //ye hai perticular todo ki id
   // ab hamko id nam ke user ka todo id wala object me completed true mark karna hai
- console.log(`Todo id is ${todoId}`)
- console.log(`user id is ${id}`)
+//  console.log(`Todo id is ${todoId}`)
+//  console.log(`user id is ${id}`)
  
 
   try {
@@ -380,7 +381,7 @@ router.put("/completed", userauth, async function (req, res) {
 
     return res.status(200).json({ msg: "Task completed",updatedtask });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(411).json({ msg: "Internal server error" });
   }
 });
