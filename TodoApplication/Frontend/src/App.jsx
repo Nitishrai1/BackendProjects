@@ -93,7 +93,7 @@ function App() {
             element={
               isAuthenticated ? (
                 <Suspense fallback={"Loading..."}>
-                  <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>
+                  <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} userdata={userdata}/>
                 </Suspense>
               ) : (
                 <Suspense fallback={"Loading..."}>
@@ -114,7 +114,7 @@ function App() {
             path="/Homepage"
             element={
               <Suspense fallback={"Loading..."}>
-               <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} setTodos={setTodos}/>
+               <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} setTodos={setTodos} userdata={userdata}/>
               </Suspense>
             }
           />

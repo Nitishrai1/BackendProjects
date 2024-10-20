@@ -10,9 +10,10 @@ export default function HomePage({
   isAuthenticated,
   setAuthenticated,
   setTodos,
+  userdata
 }) {
   const [searchquery, setSearchquery] = useState("");
-  const [notification, setNotification] = useState("");
+  // const [notification, setNotification] = useState("");
   const [filteredTodos, setFilteredTodos] = useState(todos);
   const navigate = useNavigate();
 
@@ -50,10 +51,12 @@ export default function HomePage({
           filteredTodos={filteredTodos}
           setFilteredTodos={setFilteredTodos}
           setSearchquery={setSearchquery}
+          userdata={userdata}
+          
         />
-        <div className="flex flex-col lg:flex-row gap-4 p-5">
+        <div className="flex poppins-medium  flex-col lg:flex-row gap-4 p-5">
           {/* Main Content Area */}
-          <div className="flex-1 p-2 rounded-3xl bg-white h-[650px] w-full lg:w-[800px] overflow-hidden">
+          <div className="flex-1 p-2 poppins-light rounded-3xl bg-white h-[650px] w-full lg:w-[800px] overflow-hidden">
             <div className="flex justify-between p-2">
               <div className="poppins-regular text-lg">
                 <b>Project</b>
@@ -96,7 +99,7 @@ export default function HomePage({
 
           {/* Right Sidebar */}
           <div className="lg:w-1/4 w-full">
-            <RightSideBar todos={todos} />
+            <RightSideBar todos={todos}  />
           </div>
         </div>
       </div>

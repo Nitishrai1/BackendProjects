@@ -51,7 +51,7 @@ export default function ChangePassword({ setOperation }) {
   }
 
   return (
-    <div className="bg-gray-800 p-4 rounded-lg">
+    <div className="bg-[#754ce4]  p-4 rounded-lg">
       <button
         onClick={() => setOperation("Default")}
         className="mb-4 p-2 bg-gray-600 text-white w-[80px] rounded-3xl hover:bg-gray-700 transition duration-200"

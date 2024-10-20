@@ -6,10 +6,12 @@ export default function NavBarSection({
   setFilteredTodos,
   searchquery,
   setSearchquery,
+  userdata
 }) {
   const timerRef = useRef(null);
   const [image, setImage] = useState(null);
   // const [userImage,setUserimage]=useState('');
+  const [userinfo,setUserinfo]=useState({userdata});
   const [previewImage, setPreviewImage] = useState('/placeholder.svg'); // Default image
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   useEffect(() => {
@@ -126,7 +128,7 @@ export default function NavBarSection({
   }
 
   return (
-    <nav className="bg-[#f2f6fe]">
+    <nav className="bg-[#f2f6fe] poppins-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-1 flex items-center">
@@ -151,12 +153,12 @@ export default function NavBarSection({
             <div className="ml-4 flex items-center relative">
               <img
                 className="h-8 w-8 rounded-full cursor-pointer"
-                src={previewImage}
+                src={userdata.ImageLink}
                 alt="User profile"
                 onClick={toggleDropdown}
               />
               <span className="ml-2 text-sm font-medium text-gray-700">
-                Sullivan
+                {userdata.username}
               </span>
               <div className="relative">
                 <button

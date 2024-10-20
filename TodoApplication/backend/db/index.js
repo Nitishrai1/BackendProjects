@@ -38,6 +38,14 @@ const UserSchema = new mongoose.Schema({
     imageLink: String,
 });
 
+
+const Addressschema = new mongoose.Schema({
+    college:String,
+    address:String,
+    phoneNumber:Number,
+    secondryEmail:String,
+
+})
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

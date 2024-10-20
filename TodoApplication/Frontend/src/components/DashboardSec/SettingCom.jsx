@@ -30,11 +30,11 @@ export default function Setting({userdata}){
 
     }
     return (
-        <div className="flex flex-col md:flex-row bg-gray-900 text-white min-h-screen p-6">
+        <div className="flex flex-col poppins-regular md:flex-row bg-[#f2f6fe] text-black min-h-screen p-6">
           {/* Sidebar */}
-          <div className="md:w-1/4 bg-gray-800 p-4 rounded-lg">
+          <div className="md:w-1/4 poppins-medium bg-[#f0ebff] p-4 rounded-lg">
             <div className="flex items-center mb-8">
-              <User className="w-10 h-10 rounded-full bg-gray-700 p-1 mr-3" />
+              <User className="w-10 h-10 rounded-full bg-[white] p-1 mr-3" />
               <h2 className="text-2xl font-semibold">Settings</h2>
             </div>
             <ul className="space-y-4">
@@ -63,9 +63,9 @@ export default function Setting({userdata}){
           </div>
     
           
-          <div className="md:w-3/4 bg-gray-800 ml-0 md:ml-6 mt-6 md:mt-0 p-6 rounded-lg">
+          <div className="md:w-3/4 bg-[#f1ecff] ml-0 md:ml-6 mt-6 md:mt-0 p-6 rounded-lg">
             <div className="space-y-6">
-            <h3 className="text-lg font-semibold mb-2">{activesection}</h3>
+            <h3 className="text-lg poppins-regular  font-semibold mb-2">{activesection}</h3>
               {activeSectionRendere()}
             </div>
           </div>

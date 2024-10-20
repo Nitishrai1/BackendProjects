@@ -29,10 +29,10 @@ function ChangeName({ setOperation }) {
     }
   }
   return (
-    <div className="bg-gray-800 p-4 rounded-lg">
+    <div className="bg-[#f0ebff] poppins-medium  p-4 rounded-lg">
       <button
         onClick={() => setOperation("Default")}
-        className="mb-4 p-2 bg-gray-600 text-white rounded-3xl w-[80px] hover:bg-gray-700 transition duration-200"
+        className="mb-4 p-2 bg-[white]  text-black rounded-3xl w-[80px] hover:bg-[#f1ecff] transition duration-200"
       >
         Back
       </button>
@@ -45,14 +45,14 @@ function ChangeName({ setOperation }) {
             type="text"
             id="currentPassword"
             placeholder="Enter current password"
-            className="w-full p-2 mt-1 bg-gray-700 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 mt-1   text-white rounded-lg border  focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             onChange={(e) => setnewUsername(e.target.value)}
           />
         </div>
         <button
           type="submit"
-          className="mb-4 p-2 bg-gray-600 text-white rounded-3xl hover:bg-gray-700 transition duration-200"
+          className="mb-4 p-2 bg-white   text-black rounded-3xl hover:bg-[#f1ecff] transition duration-200"
         >
           Update Name
         </button>
@@ -63,30 +63,30 @@ function ChangeName({ setOperation }) {
 
 function Default({ setOperation }) {
   return (
-    <div className="space-y-2">
+    <div className="poppins-medium  space-y-2">
       <div
-        className="flex justify-between items-center cursor-pointer p-2 bg-gray-800 rounded-lg"
+        className="flex justify-between items-center cursor-pointer p-2 bg-[#f2f6fe] rounded-lg"
         onClick={() => setOperation("changeUsername")}
       >
         <span>Change username</span>
         <ChevronRight />
       </div>
       <div
-        className="flex justify-between items-center cursor-pointer p-2 bg-gray-800 rounded-lg"
+        className="flex justify-between items-center cursor-pointer p-2 bg-[#f2f6fe] rounded-lg"
         onClick={() => setOperation("changepassword")}
       >
         <span>Change password</span>
         <ChevronRight />
       </div>
       <div
-        className="flex justify-between items-center cursor-pointer p-2 bg-gray-800 rounded-lg"
+        className="flex justify-between items-center cursor-pointer p-2 bg-[#f2f6fe] rounded-lg"
         onClick={() => setOperation("addSecondaryMail")}
       >
         <span>Add secondary mail</span>
         <ChevronRight />
       </div>
       <div
-        className="flex justify-between items-center cursor-pointer p-2 bg-gray-800 rounded-lg"
+        className="flex justify-between items-center cursor-pointer p-2 bg-[#f2f6fe] rounded-lg"
         onClick={() => setOperation("deleteAccount")}
       >
         <span>Delete Account</span>
@@ -114,5 +114,5 @@ export default function Security() {
     }
   };
 
-  return <div className="bg-gray-700 p-4 rounded-lg">{securityRenderer()}</div>;
+  return <div className="bg-[#754ce4]  p-4 rounded-lg">{securityRenderer()}</div>;
 }
