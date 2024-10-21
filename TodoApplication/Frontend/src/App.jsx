@@ -10,8 +10,8 @@ import Createtask from "./components/Functinality/Newtask";
 import Edittask from "./components/Functinality/EditTask";
 
 // Lazy loading components
-const CreateTodo = lazy(() => import("./components/Createtodo"));
-const Todos = lazy(() => import("./components/Todos"));
+const CreateTodo = lazy(() => import("./components/Functinality/Newtask"));
+const Todos = lazy(() => import("./components/Cards/Tasks/Alltask"));
 const Loginform = lazy(() => import("./components/signin"));
 const Signup = lazy(() => import("./components/signup"));
 const HomePage =lazy(()=>import("./components/HomePage"));
