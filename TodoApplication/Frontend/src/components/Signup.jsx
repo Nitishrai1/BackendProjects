@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BadRequest,
   Unautherised,
   NotFound,
   InternalserverError,
 } from "./Error";
-import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
