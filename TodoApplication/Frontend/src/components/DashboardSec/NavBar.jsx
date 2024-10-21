@@ -43,7 +43,7 @@ export default function NavBarSection({
     formData.append('image', image);
 
     try {
-      const response = await fetch('http://localhost:3000/user/Search/upload-profile-picture',  {
+      const response = await fetch('https://tasky-backend-8kl7.onrender.com/user/Search/upload-profile-picture',  {
         method:'POST',
         body:formData,
       });
@@ -69,7 +69,7 @@ export default function NavBarSection({
     try{
       const token=localStorage.getItem('token');
       console.log(`image link in the update frontedn ${userImage}`)
-      const response=await fetch("http://localhost:3000/user/updatePhoto",{
+      const response=await fetch("https://tasky-backend-8kl7.onrender.com/user/updatePhoto",{
         method:'POST',
         headers:{
           'Content-Type':"application/json",
@@ -105,7 +105,7 @@ export default function NavBarSection({
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3000/user/Search/${searchquery}`,
+        `https://tasky-backend-8kl7.onrender.com/user/Search/${searchquery}`,
         {
           method: "GET",
           headers: {

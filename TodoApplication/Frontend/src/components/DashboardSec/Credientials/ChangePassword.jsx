@@ -16,7 +16,7 @@ export default function ChangePassword({ setOperation }) {
 
       try {
         const response = await fetch(
-          "http://localhost:3000/user/changepassword",
+          "https://tasky-backend-8kl7.onrender.com/user/changepassword",
           {
             method: "POST",
             headers: {

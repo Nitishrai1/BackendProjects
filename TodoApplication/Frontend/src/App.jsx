@@ -51,7 +51,7 @@ function App() {
 
   const fetchTodos = async (token) => {
     try {
-      const response = await fetch("http://localhost:3000/user/alltodos", {
+      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/alltodos", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ function App() {
 
   const fetchUserData=async (token)=>{
     try{
-      const response=await fetch("http://localhost:3000/user/userprofile",{
+      const response=await fetch("https://tasky-backend-8kl7.onrender.com/user/userprofile",{
         method:'GET',
         headers:{
           "Content-Type":"application/json",

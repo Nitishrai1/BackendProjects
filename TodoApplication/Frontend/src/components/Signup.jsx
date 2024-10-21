@@ -17,7 +17,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/user/signup", {
+      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/signup", {
         method: "POST",
         headers: {
           "content-Type": "application/json",

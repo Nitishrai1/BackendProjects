@@ -12,7 +12,7 @@ function ChangeName({ setOperation }) {
         alert("please re login");
         return;
       }
-      const response = await fetch("http://localhost:3000/user/changename", {
+      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/changename", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

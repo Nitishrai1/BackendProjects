@@ -11,7 +11,7 @@ export default function ResetFormComponent() {
     console.log(`The reset token is ${resetToken}`);
     console.log(newpassword);
     try {
-      const response = await fetch(`http://localhost:3000/user/reset-password`, {
+      const response = await fetch(`https://tasky-backend-8kl7.onrender.com/user/reset-password`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

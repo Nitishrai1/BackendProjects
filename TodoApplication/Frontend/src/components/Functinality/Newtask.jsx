@@ -21,7 +21,7 @@ export default function Createtask({setTodos}) {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/user/newtask", {
+      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/newtask", {
         method: "POST",
         headers: {
           Authorization: token,

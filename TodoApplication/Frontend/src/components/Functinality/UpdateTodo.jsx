@@ -4,7 +4,7 @@ export default async function updatetodo(id,setTodos){
 
         const token = localStorage.getItem("token");
         console.log(token);
-        const response = await fetch("http://localhost:3000/user/completed", {
+        const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/completed", {
           method: "PUT",
           headers: {
             "content-Type": "application/json",

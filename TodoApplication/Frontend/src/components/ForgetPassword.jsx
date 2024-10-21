@@ -5,7 +5,7 @@ export default function ForgetPassword() {
 
   const sendResetPassword = async (email) => {
     try {
-      const response = await fetch("http://localhost:3000/user/forgot-password", {
+      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/forgot-password", {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
