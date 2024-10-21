@@ -6,7 +6,7 @@ const router = Router();
 const jwt = require("jsonwebtoken");
 const { createTodo, updateTodo,uservalidation, usernamevalidated } = require("../utils");
 const jwtkey = process.env.JWT_TOKEN;
-const {sendSignupEmail, sendLoggedInNotification}=require("../middlewire/emailnotification")
+const {sendSignupEmail, sendLoggedInNotification,sendNewTaskcreatedmsg,sendNewTaskcompletedmsg}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
 const {sendResetPassword}=require("../middlewire/emailnotification")
 
@@ -337,6 +337,9 @@ router.post("/newtask", userauth, async function (req, res) {
  
   const updatedTask=user1.todos;
 
+  const email=user1.email;
+  sendNewTaskcreatedmsg(email,title);
+
   return res.status(200).json({ msg: "Todos updated succesfull",updatedTask });
 });
 
@@ -373,7 +376,9 @@ router.put("/completed", userauth, async function (req, res) {
     particulartodo.status="completed";
 
     particulartodo.completed = true;
-
+    const useremail=user.email;
+    const taskname=particulartodo.title;
+    sendNewTaskcompletedmsg(useremail,taskname);
 
     await user.save();
     const updatedtask=user.todos;

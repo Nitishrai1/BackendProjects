@@ -3,16 +3,21 @@
 
 require('dotenv').config();
 const nodemailer=require("nodemailer");
+const { text } = require('stream/consumers');
+
+
+
+const transporter=nodemailer.createTransport({
+  service:'Gmail',
+  auth:{
+    user:process.env.NODEMAILER_USER_NAME,
+    pass:process.env.NODEMAILER_PASS_KEY
+  }
+})
 
 const sendSignupEmail=async(email)=>{
   try{
-    const transporter=nodemailer.createTransport({
-      service: 'Gmail', 
-            auth: {
-                user: 'nitishraigkp007@gmail.com', // Replace with your email
-                pass: process.env.NODEMAILER_PASS_KEY // Replace with your email password or app-specific password
-            }
-    })
+   
     const mailoption={
       from:"nitishraigkp007@gmail.com",
       to:email,
@@ -35,14 +40,7 @@ const sendSignupEmail=async(email)=>{
 
 const sendResetPassword=async (email,resetToken)=>{
   try{
-    const transporter=nodemailer.createTransport({
-      service:'Gmail',
-          auth:{
-            user:'nitishraigkp007@gmail.com',
-            pass:process.env.NODEMAILER_PASS_KEY
-          }
-
-    })
+    
     // reset link de dete hai user ko
 
     const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
@@ -73,15 +71,7 @@ const sendResetPassword=async (email,resetToken)=>{
 
 const sendLoggedInNotification=async(email)=>{
   try{
-    const transporter=nodemailer.createTransport({
-      service:'Gmail',
-      auth:{
-        user:'nitishraigkp007@gmail.com',
-        pass:process.env.NODEMAILER_PASS_KEY
-
-      }
-    });
-
+   
     const mailoption={
       from:"nitishraigkp007@gmail.com",
       to:email,
@@ -103,4 +93,61 @@ const sendLoggedInNotification=async(email)=>{
   }
 }
 
-module.exports={sendSignupEmail,sendResetPassword,sendLoggedInNotification};
+
+
+
+const sendNewTaskcreatedmsg=async(email,task)=>{
+  try{
+   
+
+    const mailoption={
+      from:"nitishraigkp007@gmail.com",
+      to:email,
+      subject:`New task`,
+      text:`New task added on ${task}  in your account \n Good luck for your project`
+    }
+
+    await transporter.sendMail(mailoption,(error,info)=>{
+      if(error){
+        console.log(`Error occured calling task completing mail ${error}`);
+      }else{
+        console.log(`Task completion mail sent successfull`);
+        // console.log(info)
+      }
+
+    })
+
+  }catch(err){
+    console.log(`Error occured in transporter`);
+
+  }
+}
+
+const sendNewTaskcompletedmsg=async(email,task)=>{
+
+  try{
+    const mailoption={
+      from:"nitishraigkp007@gmail.com",
+      to:email,
+      
+      subject:`Congratulation from tasky`,
+      text:`Congratulation on completing your ${task} Project \n We will let you now when the new task come`
+    }
+    await transporter.sendMail(mailoption,(error,info)=>{
+      if(error){
+        console.log(`New task added mail sent succesfully`);
+
+      }else{
+        console.log(`Error in sending the added task message`);
+
+      }
+    })
+
+  }catch(error){
+    console.log(`Error in the transporter`);
+
+  }
+
+}
+
+module.exports={sendSignupEmail,sendResetPassword,sendLoggedInNotification,sendNewTaskcreatedmsg,sendNewTaskcompletedmsg};
