@@ -1,4 +1,5 @@
 const express=require("express");
+// import { express } from "express";
 const userroute=require("./routes/user")
 const app=express();
 const dataroute=require("./routes/Data")
