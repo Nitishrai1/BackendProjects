@@ -1,11 +1,11 @@
 import { useState } from "react";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 export default function ForgetPassword() {
   const [email, setEmail] = useState("");
 
   const sendResetPassword = async (email) => {
     try {
-      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/forgot-password", {
+      const response = await fetch(`${apiUrl}/user/forgot-password`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

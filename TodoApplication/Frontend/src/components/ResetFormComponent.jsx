@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 export default function ResetFormComponent() {
   const [newpassword, SetnewPassword] = useState("");
   const [confirmNewpassword, setConfirmpassword] = useState("");
@@ -11,7 +11,7 @@ export default function ResetFormComponent() {
     console.log(`The reset token is ${resetToken}`);
     console.log(newpassword);
     try {
-      const response = await fetch(`https://tasky-backend-8kl7.onrender.com/user/reset-password`, {
+      const response = await fetch(`${apiUrl}/user/reset-password`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

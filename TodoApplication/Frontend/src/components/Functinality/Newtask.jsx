@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 export default function Createtask({setTodos}) {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -21,7 +21,7 @@ export default function Createtask({setTodos}) {
     }
 
     try {
-      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/newtask", {
+      const response = await fetch(`${apiUrl}/user/newtask`, {
         method: "POST",
         headers: {
           Authorization: token,

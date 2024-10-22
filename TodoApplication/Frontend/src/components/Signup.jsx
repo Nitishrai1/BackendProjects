@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+const apiUrl = import.meta.env.VITE_API_URL;
 import {
   BadRequest,
   Unautherised,
@@ -17,7 +18,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/signup", {
+      const response = await fetch(`${apiUrl}/user/signup`, {
         method: "POST",
         headers: {
           "content-Type": "application/json",

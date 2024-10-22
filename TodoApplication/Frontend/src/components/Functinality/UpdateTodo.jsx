@@ -1,10 +1,11 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 export default async function updatetodo(id,setTodos){
     try {
         console.log(`Todo id in update function is ${id}`);
 
         const token = localStorage.getItem("token");
         console.log(token);
-        const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/completed", {
+        const response = await fetch(`${apiUrl}/user/completed`, {
           method: "PUT",
           headers: {
             "content-Type": "application/json",

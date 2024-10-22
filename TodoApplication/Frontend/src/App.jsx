@@ -8,26 +8,26 @@ import UserProfile from "./components/DashboardSec/UserProfile";
 import Setting from "./components/DashboardSec/SettingCom";
 import Createtask from "./components/Functinality/Newtask";
 import Edittask from "./components/Functinality/EditTask";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Functinality/Newtask"));
 const Todos = lazy(() => import("./components/Cards/Tasks/Alltask"));
 const Loginform = lazy(() => import("./components/signin"));
 const Signup = lazy(() => import("./components/signup"));
-const HomePage =lazy(()=>import("./components/HomePage"));
+const HomePage = lazy(() => import("./components/HomePage"));
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(null);
   const [todos, setTodos] = useState([]);
-  const [userdata,setUserdata]=useState({});
-  const [isLoading,setIsloading]=useState(true);
+  const [userdata, setUserdata] = useState({});
+  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setAuthenticated(true);
       fetchData(token);
-      
     } else {
       setAuthenticated(false);
       setIsloading(false);
@@ -35,29 +35,30 @@ function App() {
   }, [isAuthenticated]);
 
   // loading ka logic hai niche jab tak fetch nahi hoga logind show hoga
-  const fetchData=async (token)=>{
-    try{
+  const fetchData = async (token) => {
+    try {
       setIsloading(true);
       await fetchTodos(token);
       await fetchUserData(token);
-      setIsloading(false)
-
-    }catch(err){
+      setIsloading(false);
+    } catch (err) {
       console.log(`Error fetching data: ${err}`);
       setIsloading(false);
-
     }
-  }
+  };
 
   const fetchTodos = async (token) => {
     try {
-      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/alltodos", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: token,
-        },
-      });
+      const response = await fetch(
+        `${apiUrl}/user/alltodos`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+        }
+      );
       const res = await response.json();
       if (response.ok) {
         console.log("Data fetched from database successfully");
@@ -70,55 +71,58 @@ function App() {
     }
   };
 
-  const fetchUserData=async (token)=>{
-    try{
-      const response=await fetch("https://tasky-backend-8kl7.onrender.com/user/userprofile",{
-        method:'GET',
-        headers:{
-          "Content-Type":"application/json",
-          authorization:token,
-        },
-
-      });
-      const res=await response.json();
-      if(response.ok){
+  const fetchUserData = async (token) => {
+    try {
+      const response = await fetch(
+        `${apiUrl}/user/userprofile`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+        }
+      );
+      const res = await response.json();
+      if (response.ok) {
         setUserdata(res.userProfile);
         console.log("userdata set succesfull");
-      }else{
+      } else {
         console.log("Error in fetching the user data");
       }
-    }catch(err){
+    } catch (err) {
       console.log(`Error occured ${err}`);
     }
-
-
-
-  }
+  };
   if (isAuthenticated == null || isLoading) {
     return <div>Loading authentication status and data...</div>;
   }
 
- 
   return (
     <div>
       <BrowserRouter>
-       
-
         <Routes>
           <Route
             path="/"
             element={
               isAuthenticated ? (
                 <Suspense fallback={"Loading..."}>
-                  <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} userdata={userdata} setUserdata={setUserdata}/>
+                  <HomePage
+                    todos={todos}
+                    isAuthenticated={isAuthenticated}
+                    setAuthenticated={setAuthenticated}
+                    userdata={userdata}
+                    setUserdata={setUserdata}
+                  />
                 </Suspense>
               ) : (
-                <Suspense fallback={"Loading..."}>
+                <Suspense fallback={<div className="spinner">Loading...</div>}>
                   <Loginform setAuthenticated={setAuthenticated} />
                 </Suspense>
               )
             }
           />
+          <Route path="*" element={<div>Page Not Found</div>} />
           <Route
             path="/signup"
             element={
@@ -131,36 +135,40 @@ function App() {
             path="/Homepage"
             element={
               <Suspense fallback={"Loading..."}>
-               <HomePage todos={todos} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} setTodos={setTodos} userdata={userdata}/>
+                <HomePage
+                  todos={todos}
+                  isAuthenticated={isAuthenticated}
+                  setAuthenticated={setAuthenticated}
+                  setTodos={setTodos}
+                  userdata={userdata}
+                />
               </Suspense>
             }
           />
-           <Route
+          <Route
             path="/editTask"
             element={
               <Suspense fallback={"Loading..."}>
                 <Edittask />
-               </Suspense>
+              </Suspense>
             }
           />
-           <Route
+          <Route
             path="/userProfile"
             element={
               <Suspense fallback={"Loading..."}>
-                <UserProfile todos={todos} userdata={userdata}/>
+                <UserProfile todos={todos} userdata={userdata} />
               </Suspense>
             }
           />
-           <Route
+          <Route
             path="/setting"
             element={
               <Suspense fallback={"Loading..."}>
-                <Setting  userdata={userdata}/>
-               
+                <Setting userdata={userdata} />
               </Suspense>
             }
           />
-
 
           <Route
             path="/login"
@@ -178,11 +186,11 @@ function App() {
               </Suspense>
             }
           />
-           <Route
+          <Route
             path="/createNewTask"
             element={
               <Suspense fallback={"Loading..."}>
-                <Createtask setTodos={setTodos}/>
+                <Createtask setTodos={setTodos} />
               </Suspense>
             }
           />
@@ -199,7 +207,7 @@ function App() {
             element={
               isAuthenticated ? (
                 <Suspense fallback={"Loading..."}>
-                    <Todos todos={todos} /> {/* Pass todos as props */}
+                  <Todos todos={todos} /> {/* Pass todos as props */}
                 </Suspense>
               ) : (
                 <Suspense fallback={"Loading..."}>
@@ -227,6 +235,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;

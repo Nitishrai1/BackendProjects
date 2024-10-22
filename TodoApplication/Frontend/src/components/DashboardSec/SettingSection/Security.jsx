@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
 import ChangePassword from "../Credientials/ChangePassword";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 function ChangeName({ setOperation }) {
   const [newusername, setnewUsername] = useState("");
   async function updatename(e) {
@@ -12,7 +12,7 @@ function ChangeName({ setOperation }) {
         alert("please re login");
         return;
       }
-      const response = await fetch("https://tasky-backend-8kl7.onrender.com/user/changename", {
+      const response = await fetch(`${apiUrl}/user/changename`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

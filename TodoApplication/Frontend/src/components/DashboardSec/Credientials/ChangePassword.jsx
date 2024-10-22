@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 export default function ChangePassword({ setOperation }) {
   const [currentpassword, setCurrentpassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
@@ -16,7 +16,7 @@ export default function ChangePassword({ setOperation }) {
 
       try {
         const response = await fetch(
-          "https://tasky-backend-8kl7.onrender.com/user/changepassword",
+          `${apiUrl}/user/changepassword`,
           {
             method: "POST",
             headers: {
