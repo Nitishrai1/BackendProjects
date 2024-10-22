@@ -9,7 +9,7 @@ import Setting from "./components/DashboardSec/SettingCom";
 import Createtask from "./components/Functinality/Newtask";
 import Edittask from "./components/Functinality/EditTask";
 const apiUrl = import.meta.env.VITE_API_URL;
-
+import { Navigate } from 'react-router-dom';
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Functinality/Newtask"));
 const Todos = lazy(() => import("./components/Cards/Tasks/Alltask"));
@@ -49,16 +49,13 @@ function App() {
 
   const fetchTodos = async (token) => {
     try {
-      const response = await fetch(
-        `${apiUrl}/user/alltodos`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}/user/alltodos`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+      });
       const res = await response.json();
       if (response.ok) {
         console.log("Data fetched from database successfully");
@@ -73,16 +70,13 @@ function App() {
 
   const fetchUserData = async (token) => {
     try {
-      const response = await fetch(
-        `${apiUrl}/user/userprofile`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}/user/userprofile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+      });
       const res = await response.json();
       if (response.ok) {
         setUserdata(res.userProfile);
@@ -95,144 +89,139 @@ function App() {
     }
   };
   if (isAuthenticated == null || isLoading) {
-    return <div>Loading authentication status and data...</div>;
+    return <div className="spinner">Loading authentication status and data...</div>;
   }
 
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <Suspense fallback={"Loading..."}>
-                  <HomePage
-                    todos={todos}
-                    isAuthenticated={isAuthenticated}
-                    setAuthenticated={setAuthenticated}
-                    userdata={userdata}
-                    setUserdata={setUserdata}
-                  />
-                </Suspense>
-              ) : (
-                <Suspense fallback={<div className="spinner">Loading...</div>}>
-                  <Loginform setAuthenticated={setAuthenticated} />
-                </Suspense>
-              )
-            }
-          />
-          <Route path="*" element={<div>Page Not Found</div>} />
-          <Route
-            path="/signup"
-            element={
-              <Suspense fallback={"Loading..."}>
-                <Signup />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/Homepage"
-            element={
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
               <Suspense fallback={"Loading..."}>
                 <HomePage
                   todos={todos}
                   isAuthenticated={isAuthenticated}
                   setAuthenticated={setAuthenticated}
-                  setTodos={setTodos}
                   userdata={userdata}
+                  setUserdata={setUserdata}
                 />
               </Suspense>
-            }
-          />
-          <Route
-            path="/editTask"
-            element={
-              <Suspense fallback={"Loading..."}>
-                <Edittask />
+            ) : (
+              <Suspense fallback={<div className="spinner">Loading...</div>}>
+                <Loginform setAuthenticated={setAuthenticated} />
               </Suspense>
-            }
-          />
-          <Route
-            path="/userProfile"
-            element={
+            )
+          }
+        />
+        <Route path="*" element={<div>Page Not Found</div>} />
+        <Route
+          path="/signup"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <Signup />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/homepage"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <HomePage
+                todos={todos}
+                isAuthenticated={isAuthenticated}
+                setAuthenticated={setAuthenticated}
+                setTodos={setTodos}
+                userdata={userdata}
+              />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/editTask"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <Edittask />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/userProfile"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <UserProfile todos={todos} userdata={userdata} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/setting"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <Setting userdata={userdata} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <Loginform setAuthenticated={setAuthenticated} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/forgetpassword"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <ForgetPassword />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/createNewTask"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <Createtask setTodos={setTodos} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/reset-password/:resetToken"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <ResetFormComponent />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/todos"
+          element={
+            isAuthenticated ? (
               <Suspense fallback={"Loading..."}>
-                <UserProfile todos={todos} userdata={userdata} />
+                <Todos todos={todos} />
               </Suspense>
-            }
-          />
-          <Route
-            path="/setting"
-            element={
-              <Suspense fallback={"Loading..."}>
-                <Setting userdata={userdata} />
-              </Suspense>
-            }
-          />
-
-          <Route
-            path="/login"
-            element={
+            ) : (
               <Suspense fallback={"Loading..."}>
                 <Loginform setAuthenticated={setAuthenticated} />
               </Suspense>
-            }
-          />
-          <Route
-            path="/forgetpassword"
-            element={
+            )
+          }
+        />
+        <Route
+          path="/createtodo"
+          element={
+            isAuthenticated ? (
               <Suspense fallback={"Loading..."}>
-                <ForgetPassword />
+                <CreateTodo />
               </Suspense>
-            }
-          />
-          <Route
-            path="/createNewTask"
-            element={
-              <Suspense fallback={"Loading..."}>
-                <Createtask setTodos={setTodos} />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/reset-password/:resetToken"
-            element={
-              <Suspense fallback={"Loading..."}>
-                <ResetFormComponent />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/todos"
-            element={
-              isAuthenticated ? (
-                <Suspense fallback={"Loading..."}>
-                  <Todos todos={todos} /> {/* Pass todos as props */}
-                </Suspense>
-              ) : (
-                <Suspense fallback={"Loading..."}>
-                  <Loginform setAuthenticated={setAuthenticated} />
-                </Suspense>
-              )
-            }
-          />
-          <Route
-            path="/createtodo"
-            element={
-              isAuthenticated ? (
-                <Suspense fallback={"Loading..."}>
-                  <CreateTodo />
-                </Suspense>
-              ) : (
-                <Suspense fallback={"Loading..."}>
-                  <Loginform setAuthenticated={setAuthenticated} />
-                </Suspense>
-              )
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
