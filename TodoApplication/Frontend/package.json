@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "autoprefixer": "^10.4.20",
     "chart.js": "^4.4.4",
     "dotenv": "^16.4.5",
     "lucide-react": "^0.452.0",
@@ -23,6 +22,7 @@
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
     "eslint": "^9.9.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
