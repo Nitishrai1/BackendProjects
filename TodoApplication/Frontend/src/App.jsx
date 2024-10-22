@@ -12,9 +12,10 @@ const apiUrl = import.meta.env.VITE_API_URL;
 import { Navigate } from 'react-router-dom';
 // Lazy loading components
 const CreateTodo = lazy(() => import("./components/Functinality/Newtask"));
-const Todos = lazy(() => import("./components/Cards/Tasks/Alltask"));
-const Loginform = lazy(() => import("./components/signin"));
-const Signup = lazy(() => import("./components/signup"));
+import Alltask from "./components/Cards/Tasks/Alltask";
+// const Todos = lazy(() => import("./components/Cards/Tasks/Alltask"));
+const Signin = lazy(() => import("./components/Signin"));
+const Signup = lazy(() => import("./components/Signup"));
 const HomePage = lazy(() => import("./components/HomePage"));
 
 function App() {
@@ -110,7 +111,7 @@ function App() {
               </Suspense>
             ) : (
               <Suspense fallback={<div className="spinner">Loading...</div>}>
-                <Loginform setAuthenticated={setAuthenticated} />
+                <Signin setAuthenticated={setAuthenticated} />
               </Suspense>
             )
           }
@@ -166,7 +167,7 @@ function App() {
           path="/login"
           element={
             <Suspense fallback={"Loading..."}>
-              <Loginform setAuthenticated={setAuthenticated} />
+              <Signin setAuthenticated={setAuthenticated} />
             </Suspense>
           }
         />
@@ -199,11 +200,11 @@ function App() {
           element={
             isAuthenticated ? (
               <Suspense fallback={"Loading..."}>
-                <Todos todos={todos} />
+                <Alltask todos={todos} />
               </Suspense>
             ) : (
               <Suspense fallback={"Loading..."}>
-                <Loginform setAuthenticated={setAuthenticated} />
+                <Signin setAuthenticated={setAuthenticated} />
               </Suspense>
             )
           }

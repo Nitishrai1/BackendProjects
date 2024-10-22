@@ -8,7 +8,7 @@ import {
   InternalserverError,
 } from "./Error";
 
-export default function Loginform({ setAuthenticated }) {
+export default function Signin({ setAuthenticated }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [statusCode, setStatusCode] = useState(null);
