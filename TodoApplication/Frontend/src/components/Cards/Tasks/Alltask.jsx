@@ -20,7 +20,7 @@ export default function Alltask({ todos }) {
 
         >
           <div className={`w-3 h-3 ${item.color} rounded-full`} />
-          <div className="flex flex-row justify-center items-center ml-2">
+          <div className="flex flex-row justify-center items-center">
             <p className="text-sm text-gray-500 mr-2">{item.title}</p>
             <p
               className={`text-lg font-bold ${item.color.replace(

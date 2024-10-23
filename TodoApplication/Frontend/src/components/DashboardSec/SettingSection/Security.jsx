@@ -45,7 +45,7 @@ function ChangeName({ setOperation }) {
             type="text"
             id="currentPassword"
             placeholder="Enter current password"
-            className="w-full p-2 mt-1   text-white rounded-lg border  focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 mt-1   text-black rounded-lg border  focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             onChange={(e) => setnewUsername(e.target.value)}
           />
