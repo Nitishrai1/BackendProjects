@@ -44,7 +44,7 @@ export default function Todo({ todo, setTodos }) {
               : todo.status === "ongoing"
               ? "bg-yellow-200 text-yellow-800"
               : "bg-green-200 text-green-800"
-          } rounded-3xl p-2 ml-2 w-1/3 text-[#1e0059]`}
+          } rounded-3xl p-2 ml-2 w-2/3 text-[#1e0059]`}
         >
           {todo.status}
         </button>
