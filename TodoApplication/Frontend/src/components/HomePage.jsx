@@ -77,15 +77,15 @@ export default function HomePage({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-2 poppins-medium">
               <div className="flex justify-between">
                 <div>Started</div>
-                <button onClick={updateStarted}  className="text-lg">+</button>
+                <button onClick={updateStarted}  className="text-sm">+</button>
               </div>
               <div className="flex justify-between">
                 <div>Ongoing</div>
-                <button  onClick={updateOngoing}  className="text-lg">+</button>
+                <button  onClick={updateOngoing}  className="text-sm">+</button>
               </div>
               <div className="flex justify-between">
                 <div>Completed</div>
-                <button onClick={updateCompleted} className="text-lg">+</button>
+                <button onClick={updateCompleted} className="text-sm">+</button>
               </div>
             </div>
             <div className="todo-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-2 overflow-y-auto h-[520px] scroll-container">
