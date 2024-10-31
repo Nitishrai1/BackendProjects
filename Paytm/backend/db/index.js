@@ -5,4 +5,6 @@ mongoose.connect("mongodb://localhost:27017/paytmApp")
 .catch((err)=>console.log(`error in connecting to database`))
 
 
-const userSchemaf
+const userSchema={
+    
+}
