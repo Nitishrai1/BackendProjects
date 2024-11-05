@@ -344,6 +344,38 @@ router.post("/newtask", userauth, async function (req, res) {
 });
 
 
+router.post("/updateTask",userauth,async(req,res)=>{
+  const userId=req.userId;
+  const {todoId,title,description}=req.body;
+  try{
+    const user=await User.findOne({
+      _id:userId
+    })
+    if(!user){
+      return res.status(404).json({msg:"User not found"});
+    }
+    const task=user.todos.id(todoId);
+    if (!task) {
+      return res.status(404).json({ msg: "Task not found" });
+    }
+
+    task.title = title;
+    task.description = description;
+
+
+    await user.save();
+    return res.status(200).json({msg:"Task updated succesfully"});
+
+  }catch(err){
+    return res.status(500).json({msg:"Internal server error"});
+
+  }
+
+})
+
+
+
+
 
 
 
