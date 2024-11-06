@@ -43,7 +43,8 @@ const sendResetPassword=async (email,resetToken)=>{
     
     // reset link de dete hai user ko
 
-    const resetUrl = `https://localhost:5173/reset-password/${resetToken}`;
+    const resetUrl = `https://frontend-sigma-sable-98.vercel.app/reset-password/${resetToken}`;
+    console.log("updated the route");
     const mailoption={
       from:'nitishraigkp007@gmail.com',
       to:email,
