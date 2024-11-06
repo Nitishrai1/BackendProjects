@@ -369,7 +369,7 @@ router.post("/updateTask",userauth,async(req,res)=>{
     return res.status(200).json({msg:"Task updated succesfully"});
 
   }catch(err){
-    return res.status(500).json({msg:"Internal server error"});
+    return res.status(500).json({msg:"Internal server error",err});
 
   }
 
