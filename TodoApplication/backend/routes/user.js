@@ -345,18 +345,20 @@ router.post("/newtask", userauth, async function (req, res) {
 
 
 router.post("/updateTask",userauth,async(req,res)=>{
-  const userId=req.userId;
+  const id=req.userId;
   const {taskId,title,description}=req.body;
-  console.log(`user id is ${userId}`);
+  // console.log(`user id is ${userId}`);
   try{
+    console.log(`User ID from token: ${id}`);
+    console.log(`Received Task ID: ${taskId}`);
     const user=await User.findOne({
-      _id:userId
+      _id:id
     })
-    console.log(`Todo id is ${todoId} \n title is ${title} \n  description is ${description}`);
+    // console.log(`Todo id is ${todoId} \n title is ${title} \n  description is ${description}`);
     if(!user){
       return res.status(404).json({msg:"User not found"});
     }
-    const task=user.todos.id(taskId);
+    const task = user.todos.id(mongoose.Types.ObjectId(taskId));
     if (!task) {
       return res.status(404).json({ msg: "Task not found" });
     }
@@ -369,7 +371,7 @@ router.post("/updateTask",userauth,async(req,res)=>{
     return res.status(200).json({msg:"Task updated succesfully"});
 
   }catch(err){
-    return res.status(500).json({msg:"Internal server error",err});
+    return res.status(500).json({msg:"Internal server error"});
 
   }
 
