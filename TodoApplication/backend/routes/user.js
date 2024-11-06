@@ -346,7 +346,7 @@ router.post("/newtask", userauth, async function (req, res) {
 
 router.post("/updateTask",userauth,async(req,res)=>{
   const userId=req.userId;
-  const {todoId,title,description}=req.body;
+  const {taskId,title,description}=req.body;
   console.log(`user id is ${userId}`);
   try{
     const user=await User.findOne({
