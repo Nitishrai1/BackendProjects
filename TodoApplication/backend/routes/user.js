@@ -358,7 +358,7 @@ router.post("/updateTask",userauth,async(req,res)=>{
     if(!user){
       return res.status(404).json({msg:"User not found"});
     }
-    const task = user.todos.id(mongoose.Types.ObjectId(taskId));
+    const task = user.todos.id(taskId);
     if (!task) {
       console.log("Task not found in user's todos");
       return res.status(404).json({ msg: "Task not found" });
