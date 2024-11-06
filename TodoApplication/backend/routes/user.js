@@ -349,8 +349,8 @@ router.post("/updateTask",userauth,async(req,res)=>{
   const {taskId,title,description}=req.body;
   // console.log(`user id is ${userId}`);
   try{
-    console.log(`User ID from token: ${id}`);
-    console.log(`Received Task ID: ${taskId}`);
+    // console.log(`User ID from token: ${id}`);
+    // console.log(`Received Task ID: ${taskId}`);
     const user=await User.findOne({
       _id:id
     })
