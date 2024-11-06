@@ -360,17 +360,19 @@ router.post("/updateTask",userauth,async(req,res)=>{
     }
     const task = user.todos.id(mongoose.Types.ObjectId(taskId));
     if (!task) {
+      console.log("Task not found in user's todos");
       return res.status(404).json({ msg: "Task not found" });
     }
 
     task.title = title;
     task.description = description;
-
+    console.log("Task updated successfully");
 
     await user.save();
     return res.status(200).json({msg:"Task updated succesfully"});
 
   }catch(err){
+    console.error("Error updating task:", err);
     return res.status(500).json({msg:"Internal server error"});
 
   }
