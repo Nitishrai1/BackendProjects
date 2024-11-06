@@ -356,7 +356,7 @@ router.post("/updateTask",userauth,async(req,res)=>{
     if(!user){
       return res.status(404).json({msg:"User not found"});
     }
-    const task=user.todos.id(todoId);
+    const task=user.todos.id(taskId);
     if (!task) {
       return res.status(404).json({ msg: "Task not found" });
     }
