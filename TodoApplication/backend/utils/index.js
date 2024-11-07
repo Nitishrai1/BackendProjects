@@ -1,5 +1,5 @@
 const zod=require("zod");
-
+// Zod for validateion
 const createTodo=zod.object({
     title:zod.string().min(1),
     description:zod.string().min(1)
