@@ -319,7 +319,7 @@ router.post("/newtask", userauth, async function (req, res) {
   }
 
   //   const user = req.UserId; //ise ham us nam ka uiser nikallete hai authertication me se
-  const date=Date.now;
+  const date=Date.now();
   const user1 = await User.findByIdAndUpdate(
     {
       _id: id,
