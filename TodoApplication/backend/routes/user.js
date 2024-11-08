@@ -416,7 +416,7 @@ router.put("/completed", userauth, async function (req, res) {
     particulartodo.status="completed";
 
     particulartodo.completed = true;
-    particulartodo.endDate=Date.now
+    particulartodo.endDate=Date.now();
     const useremail=user.email;
     const taskname=particulartodo.title;
     sendNewTaskcompletedmsg(useremail,taskname);
