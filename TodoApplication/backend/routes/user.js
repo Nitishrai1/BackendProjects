@@ -319,6 +319,7 @@ router.post("/newtask", userauth, async function (req, res) {
   }
 
   //   const user = req.UserId; //ise ham us nam ka uiser nikallete hai authertication me se
+  const date=Date.now;
   const user1 = await User.findByIdAndUpdate(
     {
       _id: id,
@@ -329,6 +330,7 @@ router.post("/newtask", userauth, async function (req, res) {
           title,
           description,
           completed:false,
+          startDate:date
         },
       },
     },
@@ -414,6 +416,7 @@ router.put("/completed", userauth, async function (req, res) {
     particulartodo.status="completed";
 
     particulartodo.completed = true;
+    particulartodo.endDate=Date.now
     const useremail=user.email;
     const taskname=particulartodo.title;
     sendNewTaskcompletedmsg(useremail,taskname);
