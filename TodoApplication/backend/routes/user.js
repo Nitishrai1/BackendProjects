@@ -400,7 +400,7 @@ router.put("/completed", userauth, async function (req, res) {
 //  console.log(`Todo id is ${todoId}`)
 //  console.log(`user id is ${id}`)
  
-
+// 
   try {
     const user = await User.findOne({
       _id: id,
