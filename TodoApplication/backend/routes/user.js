@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Router } = require("express");
-const User = require("../db");
+const {User} = require("../db/");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 const jwt = require("jsonwebtoken");
@@ -67,6 +67,7 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   
   try{
+    console.log("in the try block")
     const user = await User.findOne({ email, password });
     console.log(user)
     if (!user) {
