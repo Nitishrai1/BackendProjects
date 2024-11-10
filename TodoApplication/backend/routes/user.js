@@ -215,7 +215,7 @@ router.get("/userProfile",userauth,async (req,res)=>{
           email:user.email,
           username:user.username,
           ImageLink:user.imageLink,
-          _id:user._id
+          _id:id
 
       }
       return res.status(200).json({msg:`User data are`,userProfile})
