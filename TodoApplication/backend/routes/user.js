@@ -67,9 +67,10 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   
   try{
-    console.log(`${email} && password is ${password}`)
     const user = await User.findOne({ email, password });
+    console.log(user)
     if (!user) {
+      console.log("no data found")
       return res.status(401).json({ msg: "Chala ja bhosdikae" });
     }
     const userId = user._id;
