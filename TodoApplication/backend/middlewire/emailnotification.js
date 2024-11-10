@@ -170,6 +170,8 @@ const sentChatLink=async(clientEmail)=>{
       console.log('chat link send succesulyy');
     }
     
+  }catch(err){
+    console.log('error in the nodemialer of chat link')
   }
 }
 
