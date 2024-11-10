@@ -67,14 +67,15 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   
   try{
+    console.log(`${email} && password is ${password}`)
     const user = await User.findOne({ email, password });
     if (!user) {
       return res.status(401).json({ msg: "Chala ja bhosdikae" });
     }
     const userId = user._id;
-    // console.log(userId)
+    console.log(userId)
     const token = jwt.sign({ userId }, jwtkey);
-    // console.log(token);
+    console.log(token);
     sendLoggedInNotification(email);
 
     return res.status(200).json({ token });
