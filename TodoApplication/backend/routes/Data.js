@@ -63,4 +63,25 @@ router.get("/notification/:developerId", async (req, res) => {
   }
 });
 
+router.get('/allUser',async(req,res)=>{
+  try{
+    const user=await User.find();
+    const totaluser=[];
+    user.map((data)=>{
+      const userdata={
+        userId:data._id,
+        userName:data.username,
+        userEmail:data.email,
+      }
+      totaluser.push(userdata);
+    })
+    res.status(200).json({totaluser});
+
+  }catch(err){
+    console.log(`Err orccured in fettching all the developer`)
+    res.status(500).json("Internal server Error");
+  }
+
+})
+
 module.exports = router;
