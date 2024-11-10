@@ -44,6 +44,15 @@ const UserSchema = new mongoose.Schema({
     imageLink: String,
 });
 
+const notification = new mongoose.Schema({
+    developerId:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true},
+    clientEmail:{type:String,required:true},
+    projectDetails:{type:String,required:true},
+    read:{type:Boolean,default:false},
+    createdAt:{type:Date,default:Date.now},
+
+})
+const Notification=mongoose.model('Notification',notification);
 
 const Addressschema = new mongoose.Schema({
     college:String,
@@ -54,4 +63,4 @@ const Addressschema = new mongoose.Schema({
 })
 const User = mongoose.model('User', UserSchema);
 
-module.exports = User;
+module.exports = {User,Notification};

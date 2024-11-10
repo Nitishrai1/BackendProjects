@@ -8,7 +8,8 @@ const { createTodo, updateTodo,uservalidation, usernamevalidated } = require("..
 const jwtkey = process.env.JWT_TOKEN;
 const {sendSignupEmail, sendLoggedInNotification,sendNewTaskcreatedmsg,sendNewTaskcompletedmsg}=require("../middlewire/emailnotification")
 const crypto=require("crypto");  //this is for resent token generation
-const {sendResetPassword}=require("../middlewire/emailnotification")
+const {sendResetPassword,sentChatLink}=require("../middlewire/emailnotification")
+
 
 router.post("/signup", async function (req, res) {
   const { email, password } = req.body;
@@ -210,7 +211,8 @@ router.get("/userProfile",userauth,async (req,res)=>{
       const userProfile={
           email:user.email,
           username:user.username,
-          ImageLink:user.imageLink
+          ImageLink:user.imageLink,
+          id:user._id
 
       }
       return res.status(200).json({msg:`User data are`,userProfile})
@@ -295,7 +297,19 @@ router.post("/changename",userauth, async(req,res)=>{
 
 
 
+// chat link send karne karouter nichec hai
 
+router.post("/sent-Chat-Link",userauth,async(req,res)=>{
+  const {clientEmail,chatLink}=req.body;
+  try{
+    await sentChatLink(clientEmail,chatLink);
+    res.status(200).json({msg:"chat link send succesfully"})
+  }catch(err){
+    res.status(500).json({msg:"error in sending the chat link"})
+
+  }
+  
+})
 
 
 

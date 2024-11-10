@@ -151,4 +151,26 @@ const sendNewTaskcompletedmsg=async(email,task)=>{
 
 }
 
-module.exports={sendSignupEmail,sendResetPassword,sendLoggedInNotification,sendNewTaskcreatedmsg,sendNewTaskcompletedmsg};
+// chat app nitification
+const sentChatLink=async(clientEmail)=>{
+  // const chatLink = `https://frontend-sigma-sable-98.vercel.app/`;
+  try{
+    const mailoption={
+      from:"nitishraigkp007@gmail.com",
+      to:clientEmail,
+       subject:`Update from tasky`,
+      text:`Hello I have looked up your project and i am willing to do the project \n 
+      please follow the link to have a one to one converstaion: `,
+    }
+
+    await transporter.sendMail(mailoption(Err,info));
+    if(err){
+      console.log("Error occcurend in sending the chat link")
+    }else{
+      console.log('chat link send succesulyy');
+    }
+    
+  }
+}
+
+module.exports={sendSignupEmail,sendResetPassword,sendLoggedInNotification,sendNewTaskcreatedmsg,sendNewTaskcompletedmsg,sentChatLink};
