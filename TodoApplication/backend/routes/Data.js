@@ -19,7 +19,7 @@ router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
   }
 });
 
-module.exports = router;
+
 
 router.get("/:title", userauth, async (req, res) => {
   const id = req.userId;
