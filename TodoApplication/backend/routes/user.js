@@ -79,7 +79,7 @@ router.post("/signin", async (req, res) => {
 
     return res.status(200).json({ token });
   }catch(err){
-    return res.status(500).json({msg:"Internal server error in signin"});
+    return res.status(500).json({msg:"Internal server error"});
   }
 });
 
