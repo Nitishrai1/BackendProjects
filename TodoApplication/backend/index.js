@@ -43,6 +43,6 @@ const PORT=3000;
 app.listen(PORT,function(){
     console.log(`App is listing on port number ${PORT}`);
 })
-server.listen(PORT, () => {
+server.listen(3001, () => {
     console.log('Backend server is running on port 3000');
 });
