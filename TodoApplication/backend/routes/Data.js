@@ -5,7 +5,7 @@ const router = Router();
 
 const{ upload,upload2} = require("../utils/multter"); // Path to your multer config file
 
-router.post("/upload-profile-picture", upload.single("image"), async(req, res) => {
+router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
   try {
     // console.log(`inside the upload api`)
     if(!req.file){
@@ -22,7 +22,7 @@ router.post("/upload-profile-picture", upload.single("image"), async(req, res) =
   }
 });
 // yaha par projectDetails upload karne ka route banega
-router.post("/upload-projectDetails",upload2.single("file"),async(req,res)=>{
+router.post("/upload-projectDetails",upload2.single("file"),(req,res)=>{
   try{
     if(!req.file){
       return res.status(404).json({msg:"Please upload the image"})
@@ -30,9 +30,8 @@ router.post("/upload-projectDetails",upload2.single("file"),async(req,res)=>{
     const projectUrl=req.file.path;
     res.status(200).json({projectUrl});
 
-  }catch(err){
-    res.status(500).json({msg:"Error in uploading the project details"});
-
+  }catch(error){
+    res.status(500).json({ error: "Project details upload failed", details: error.message });
   }
 })
 
