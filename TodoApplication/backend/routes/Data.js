@@ -3,7 +3,7 @@ const { User } = require("../db");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 
-const{ upload,upload2} = require("../utils/multter"); // Path to your multer config file
+const { upload,upload2} = require("../utils/multter"); // Path to your multer config file
 
 router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
   try {
@@ -22,18 +22,25 @@ router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
   }
 });
 // yaha par projectDetails upload karne ka route banega
-router.post("/upload-projectDetails",upload2.single("file"),(req,res)=>{
-  try{
-    if(!req.file){
-      return res.status(404).json({msg:"Please upload the correct file"})
+router.post("/upload-projectDetails", upload2.single("file"), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ msg: "Please upload the correct file" });
     }
-    const projectUrl=req.file.path;
-    res.status(200).json({projectUrl});
 
-  }catch(error){
-    res.status(500).json({ error: "Project details upload failed", details: error.message });
+   
+    const projectUrl = req.file.path;
+    return res.status(200).json({ projectUrl });
+
+  } catch (error) {
+    console.error("Error uploading project details:", error);
+    return res.status(500).json({
+      error: "Project details upload failed",
+      details: error.message,
+    });
   }
-})
+});
+
 
 
 
