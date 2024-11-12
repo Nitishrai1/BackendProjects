@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { User } = require("../db");
+const { User,Notification } = require("../db");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 
@@ -22,15 +22,29 @@ router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
   }
 });
 // yaha par projectDetails upload karne ka route banega
-router.post("/upload-projectDetails", upload2.single("file"), (req, res) => {
+router.post("/upload-projectDetails", upload2.single("file"),async (req, res) => {
+
+  const{developerId,message,clientEmail}=req.body;
   try {
     if (!req.file) { 
       return res.status(400).json({ msg: "Please upload the correct file" });
     }
+    if (!developerId || !message || !clientEmail) {
+      return res.status(400).json({ msg: "Missing required fields (developerId, message, or clientEmail)" });
+    }
 
    
     const projectUrl = req.file.path;
-    return res.status(200).json({ projectUrl });
+    const notification=new Notification({
+      developerId:developerId,
+      clientEmail:clientEmail,
+      message:message,
+      projectDetails:projectUrl
+
+    })
+    await notification.save();
+
+    return res.status(200).json(`Notification saved in the databse`);
 
   } catch (error) {
     console.error("Error uploading project details:", error);
@@ -40,6 +54,8 @@ router.post("/upload-projectDetails", upload2.single("file"), (req, res) => {
     });
   }
 });
+
+
 
 
 

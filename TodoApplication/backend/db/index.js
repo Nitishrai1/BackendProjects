@@ -48,6 +48,7 @@ const UserSchema = new mongoose.Schema({
 const notification = new mongoose.Schema({
     developerId:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true},
     clientEmail:{type:String,required:true},
+    message:{type:String,required:true},
     projectDetails:{type:String,required:true},
     read:{type:Boolean,default:false},
     createdAt:{type:Date,default:Date.now},
