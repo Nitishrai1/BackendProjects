@@ -11,7 +11,7 @@ const storage = new CloudinaryStorage({
     allowed_formats: ['jpg', 'png', 'jpeg'],
   },
 });
-const projectDetailsStorage = new CloudinaryStorage({
+const projectDetials = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'project-details',
