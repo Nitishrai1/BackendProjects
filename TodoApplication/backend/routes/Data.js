@@ -25,7 +25,7 @@ router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
 router.post("/upload-projectDetails",upload2.single("file"),(req,res)=>{
   try{
     if(!req.file){
-      return res.status(404).json({msg:"Please upload the image"})
+      return res.status(404).json({msg:"Please upload the correct file"})
     }
     const projectUrl=req.file.path;
     res.status(200).json({projectUrl});

@@ -19,6 +19,10 @@ const projectDetails = new CloudinaryStorage({
   },
 });
 const upload = multer({ storage: storage });
-const upload2=multer({storage:projectDetails});
+const upload2 = multer({
+  storage: projectDetails,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB limit
+});
+
 
 module.exports = {upload,upload2};
