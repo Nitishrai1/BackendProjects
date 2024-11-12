@@ -42,6 +42,7 @@ const UserSchema = new mongoose.Schema({
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     imageLink: String,
+   
 });
 
 const notification = new mongoose.Schema({

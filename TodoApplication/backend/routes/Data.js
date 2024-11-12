@@ -3,11 +3,14 @@ const { User } = require("../db");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 
-const upload = require("../utils/multter"); // Path to your multer config file
+const{ upload,upload2} = require("../utils/multter"); // Path to your multer config file
 
-router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
+router.post("/upload-profile-picture", upload.single("image"), async(req, res) => {
   try {
     // console.log(`inside the upload api`)
+    if(!req.file){
+      return res.status(404).json({msg:"Please upload the image"})
+    }
     const imageUrl = req.file.path; // This will be the URL of the uploaded image from Cloudinary
     // console.log(`the image url in api is ${imageUrl}`)
     res.status(200).json({ imageUrl });
@@ -18,6 +21,23 @@ router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
       .json({ error: "Image upload failed!", details: error.message });
   }
 });
+// yaha par projectDetails upload karne ka route banega
+router.post("/upload-projectDetails",upload2.single("file"),async(req,res)=>{
+  try{
+    if(!req.file){
+      return res.status(404).json({msg:"Please upload the image"})
+    }
+    const projectUrl=req.file.path;
+    res.status(200).json({projectUrl});
+
+  }catch(err){
+    res.status(500).json({msg:"Error in uploading the project details"});
+
+  }
+})
+
+
+
 
 router.get('/allUser',async(req,res)=>{
   try{

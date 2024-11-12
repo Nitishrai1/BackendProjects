@@ -11,7 +11,14 @@ const storage = new CloudinaryStorage({
     allowed_formats: ['jpg', 'png', 'jpeg'],
   },
 });
-
+const projectDetailsStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'project-details',
+    allowed_formats: ['doc', 'docx', 'pdf', 'jpg'], 
+  },
+});
 const upload = multer({ storage: storage });
+const upload2=multer({storage:projectDetials});
 
-module.exports = upload;
+module.exports = {upload,upload2};
