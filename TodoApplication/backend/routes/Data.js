@@ -24,7 +24,7 @@ router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
 // yaha par projectDetails upload karne ka route banega
 router.post("/upload-projectDetails", upload2.single("file"), (req, res) => {
   try {
-    if (!req.file) {
+    if (!req.file) { 
       return res.status(400).json({ msg: "Please upload the correct file" });
     }
 
