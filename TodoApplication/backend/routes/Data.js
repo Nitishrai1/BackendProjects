@@ -22,39 +22,52 @@ router.post("/upload-profile-picture", upload.single("image"), (req, res) => {
   }
 });
 // yaha par projectDetails upload karne ka route banega
-router.post("/upload-projectDetails", upload2.single("file"),async (req, res) => {
-
-  const{developerId,message,clientEmail}=req.body;
+router.post("/upload-projectFile", upload2.single("file"), async (req, res) => {
   try {
-    if (!req.file) { 
+    if (!req.file) {
       return res.status(400).json({ msg: "Please upload the correct file" });
     }
-    if (!developerId || !message || !clientEmail) {
-      return res.status(400).json({ msg: "Missing required fields (developerId, message, or clientEmail)" });
-    }
 
-   
     const projectUrl = req.file.path;
-    const notification=new Notification({
-      developerId:developerId,
-      clientEmail:clientEmail,
-      message:message,
-      projectDetails:projectUrl
-
-    })
-    await notification.save();
-
-    return res.status(200).json(`Notification saved in the databse`);
-
+    return res.status(200).json({ projectUrl });
   } catch (error) {
-    console.error("Error uploading project details:", error);
+    console.error("Error uploading project file:", error);
     return res.status(500).json({
-      error: "Project details upload failed",
+      error: "Project file upload failed",
       details: error.message,
     });
   }
 });
 
+
+router.post("/save-projectDetails", async (req, res) => {
+  const { developerId, message, clientEmail, projectUrl } = req.body;
+
+  try {
+    if (!developerId || !message || !clientEmail || !projectUrl) {
+      return res.status(400).json({
+        msg: "Missing required fields (developerId, message, clientEmail, or projectUrl)",
+      });
+    }
+
+    const notification = new Notification({
+      developerId: developerId,
+      clientEmail: clientEmail,
+      message: message,
+      projectDetails: projectUrl,
+    });
+
+    await notification.save();
+
+    return res.status(200).json({ msg: "Notification saved in the database" });
+  } catch (error) {
+    console.error("Error saving project details to the database:", error);
+    return res.status(500).json({
+      error: "Saving project details to the database failed",
+      details: error.message,
+    });
+  }
+});
 
 
 
