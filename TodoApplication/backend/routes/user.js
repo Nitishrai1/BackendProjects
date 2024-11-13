@@ -173,6 +173,28 @@ router.get("/unreadNotification", userauth, async (req, res) => {
   }
 });
 
+router.get("/allNotification", userauth, async (req, res) => {
+  const id = req.userId;
+
+  try {
+    const user = await Notification.find({
+      developerId: id,
+    });
+
+    if (!user || user.length === 0) {
+      return res.status(404).json({ msg: "No new notifications" });
+    }
+
+    const allNotification = user
+      .filter((usr) => usr.read === false);
+
+    return res.status(200).json({ allNotification });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+});
+
 router.get("/todos", userauth, async function (req, res) {
   const id = req.userId;
 
