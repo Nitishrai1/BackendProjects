@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Router } = require("express");
-const {User} = require("../db/");
+const {User ,Notification} = require("../db/");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
 const jwt = require("jsonwebtoken");
@@ -144,6 +144,30 @@ router.post('/reset-password',async(req,res)=>{
 
   
 })
+
+// yek route banate hai notificaiton nikalne ke liye jo unread hai
+router.get("/unreadNotification", userauth, async (req, res) => {
+  const id = req.userId;
+
+  try {
+    
+    const user = await Notification.find({
+      developerId: id,
+    });
+
+    if (!user || user.length === 0) {
+      return res.status(404).json({ msg: "No new notifications" });
+    }
+
+   
+    const unreadNotification = user.filter((usr) => usr.read === false);
+
+    return res.status(200).json({ unreadNotification });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+});
 
 
 
