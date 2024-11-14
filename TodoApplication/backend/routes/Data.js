@@ -143,5 +143,28 @@ router.get("/notification/:developerId", async (req, res) => {
   }
 });
 
+router.post("/updateNotification",userauth,async (req,res)=>{
+  const id=req.userId;
+  try{
+    const notificaiton =await Notification.find({
+      developerId:id
+    })
+
+    if(!notificaiton || notificaiton.length===0){
+      return res.status(404).json({msg:{'Notificaiotn not found for the user'}});
+    }
+    // ab pura notificaiton par iterate karke read ko true kar do
+    for (let noti of notifications) {
+      noti.read = true;
+      await noti.save();  
+    }
+    return res.status(200).json({msg:"All notification have been marked as read"});
+
+  }catch(err){
+    return res.status(500).json({msg:"Internal server error"});
+
+  }
+})
+
 
 module.exports = router;
