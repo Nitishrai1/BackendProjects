@@ -151,7 +151,7 @@ router.post("/updateNotification",userauth,async (req,res)=>{
     })
 
     if(!notificaiton || notificaiton.length===0){
-      return res.status(404).json({msg:{'Notificaiotn not found for the user'}});
+      return res.status(404).json({msg:'Notificaiotn not found for the user'});
     }
     // ab pura notificaiton par iterate karke read ko true kar do
     for (let noti of notifications) {
