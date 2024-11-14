@@ -145,19 +145,23 @@ router.get("/notification/:developerId", async (req, res) => {
 
 router.post("/updateNotification",userauth,async (req,res)=>{
   const id=req.userId;
+  // console.log(`user is in the route is ${id}`)
   try{
     const notificaiton =await Notification.find({
       developerId:id
     })
+    // console.log(`all notificaiotn are ${notificaiton}`)
 
     if(!notificaiton || notificaiton.length===0){
       return res.status(404).json({msg:'Notificaiotn not found for the user'});
     }
     // ab pura notificaiton par iterate karke read ko true kar do
-    for (let noti of notifications) {
+    // console.log("before update");
+    for (let noti of notificaiton) {
       noti.read = true;
       await noti.save();  
     }
+    // console.log('after update');
     return res.status(200).json({msg:"All notification have been marked as read"});
 
   }catch(err){
