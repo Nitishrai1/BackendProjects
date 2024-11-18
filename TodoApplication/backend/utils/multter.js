@@ -11,6 +11,7 @@ const storage = new CloudinaryStorage({
     allowed_formats: ['jpg', 'png', 'jpeg'],
   },
 });
+
 const projectDetails = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
