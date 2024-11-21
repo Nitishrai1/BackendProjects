@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 
+
 mongoose.connect("mongodb://localhost:27017/paytmApp")
 .then(()=>console.log(`mongodb connected succesfully`))
 .catch((err)=>console.log(`error in connecting to database`))
@@ -37,5 +38,23 @@ const userSchema=new mongoose.Schema({
 
 })
 
+
+const bankSchema=new mongoose.Schema({
+   userId:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"User"
+   },
+   balance:{
+      type:Number,
+      required:true
+   }
+   
+})
+const Account=mongoose.model('Account',bankSchema);
 const User=mongoose.model('User',userSchema)
-module.exports=User;
+
+module.exports={
+   Account,
+   User
+
+};
