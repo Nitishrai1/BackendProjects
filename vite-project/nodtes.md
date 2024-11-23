@@ -41,3 +41,6 @@ function useTodos(){
 
 
 The latest usestate from SWR is  useSWR which is used to fetch the data from the database which have three argument data error and isLoading
+
+
+Typescript : it a lossely typed langauage over the javascript. Javascript is a subset of typscript and typscript never run in browser browser only understand javascript basically a typscript file is converted in javascript and then run on browserf
