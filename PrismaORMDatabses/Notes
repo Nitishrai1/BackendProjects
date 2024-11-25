@@ -6,3 +6,10 @@ SQl database are used in production because it is more secure and formated
 there are many sql databases like 
 MySql
 Postgres
+
+funciton that a database used or four high level query
+
+insert
+update
+delete
+get
