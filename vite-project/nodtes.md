@@ -44,3 +44,54 @@ The latest usestate from SWR is  useSWR which is used to fetch the data from the
 
 
 Typescript : it a lossely typed langauage over the javascript. Javascript is a subset of typscript and typscript never run in browser browser only understand javascript basically a typscript file is converted in javascript and then run on browserf
+
+
+<!-- write a funciton that takes a function as an argument and run the function after 1 sec -->
+
+funciton runafter1sec(fn: ()=>void){     // ()=> this means that the funciton return type is void as my fn funciton is not returing somethingn 
+    settimout(fn,1000);
+}
+
+funciton fn(){
+    console.log("Hello i am nitish);
+}
+
+interface is used to implements a class base data
+
+Types used to aggregate the data it is used to provide uniioun intersection
+
+type Employee={
+    name:String;
+    startDate:Date;
+}
+
+interface Manager{
+    name:String;
+    department:String;
+}
+
+type Techlead=Employee & Manager;
+
+const i:Techlead={
+    name:"Nitihs,
+    startDate:3-23-22;
+    department:"Admission"
+}
+
+
+Generics are the language indepenet concept present in many langauges that helps you to create component that works with any data types and help to resolve some compiled time errors
+
+eg.
+funciton identity<T>(arg:T):T{
+    return arg;
+}
+<!-- or we can write like -->
+funciton identity<T>(arg:string):T{
+    return arg;
+}
+funciton identity<T>(arg:number):T{
+    return arg;
+}
+
+let output=identity("Nitish")
+let output2=identity(100);
