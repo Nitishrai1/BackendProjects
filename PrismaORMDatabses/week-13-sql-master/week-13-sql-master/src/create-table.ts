@@ -1,6 +1,7 @@
 import { getClient } from "./utils";
 
 async function createTable() {
+    const client = await getClient();
     const createUserTableQuery = `
         CREATE TABLE users (
             id SERIAL PRIMARY KEY,
@@ -9,7 +10,6 @@ async function createTable() {
         );
     `;
 
-    const client = await getClient();
 
     await client.query(createUserTableQuery);
 
