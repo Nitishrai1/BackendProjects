@@ -10,15 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma = new client_1.PrismaClient(); //prismaClient ke andar ham log log add kar sakte hai step by step process dekhne ke liye
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         //   here we will write all the prisma query 
-        yield prisma.user.create({
+        yield prisma.post.create({
             data: {
-                id: 1,
-                email: "nitishraigkp007@gmail.com",
-                name: "Nitish",
+                title: "Web dev",
+                content: "full stack app",
+                author: {
+                    connect: {
+                        id: 1
+                    }
+                }
             }
         });
     });

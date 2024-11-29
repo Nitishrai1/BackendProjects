@@ -1,4 +1,5 @@
 "use strict";
+// we can perfor advance query to find the data
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -10,25 +11,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma = new client_1.PrismaClient(); //prismaClient ke andar ham log log add kar sakte hai step by step process dekhne ke liye
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        //   here we will write all the prisma query 
-        yield prisma.user.create({
-            data: {
-                id: 1,
-                email: "nitishraigkp007@gmail.com",
-                name: "Nitish",
-            }
+        let res = yield prisma.user.findMany({
+            where: {
+                email: {
+                    endsWith: "gmail.com"
+                },
+                posts: {
+                    some: {
+                        published: true,
+                    },
+                },
+            },
+            include: {
+                posts: {
+                    where: {
+                        published: true,
+                    },
+                },
+            },
         });
+        console.log(res);
     });
 }
-main()
-    .then(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield prisma.$disconnect();
-}))
-    .catch((e) => __awaiter(void 0, void 0, void 0, function* () {
-    console.error(e);
-    yield prisma.$disconnect();
-    process.exit(1);
-}));
+main();

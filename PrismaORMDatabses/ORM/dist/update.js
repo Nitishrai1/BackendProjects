@@ -13,22 +13,14 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        //   here we will write all the prisma query 
-        yield prisma.user.create({
+        yield prisma.user.update({
+            where: {
+                id: 1
+            },
             data: {
-                id: 1,
-                email: "nitishraigkp007@gmail.com",
-                name: "Nitish",
+                name: "nitish"
             }
         });
     });
 }
-main()
-    .then(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield prisma.$disconnect();
-}))
-    .catch((e) => __awaiter(void 0, void 0, void 0, function* () {
-    console.error(e);
-    yield prisma.$disconnect();
-    process.exit(1);
-}));
+main();

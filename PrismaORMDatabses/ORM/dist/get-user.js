@@ -10,25 +10,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma = new client_1.PrismaClient(); //prismaClient ke andar ham log log add kar sakte hai step by step process dekhne ke liye
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        //   here we will write all the prisma query 
-        yield prisma.user.create({
-            data: {
-                id: 1,
-                email: "nitishraigkp007@gmail.com",
-                name: "Nitish",
+        const users = yield prisma.user.findMany({
+            where: {
+                email: "nitishraigkp007@gmail.com"
             }
         });
+        for (let i = 0; i < users.length; i++) {
+            console.log(users[i].email);
+        }
+        const user = yield prisma.user.findUnique({
+            where: {
+                id: 1
+            },
+            include: {
+                posts: true
+            }
+        });
+        console.log(user);
     });
 }
-main()
-    .then(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield prisma.$disconnect();
-}))
-    .catch((e) => __awaiter(void 0, void 0, void 0, function* () {
-    console.error(e);
-    yield prisma.$disconnect();
-    process.exit(1);
-}));
+main();
