@@ -12,3 +12,14 @@ The famous serverless providers
 when should we have to use the serverledd architecture
 1when you have to get off the ground fast and dont want to look to the deployment
 2 when thier is less trafic on your site
+
+
+
+
+Cloudfare worker dont use the node run time or bun also known as v8 engine 
+
+
+wrangler is a CLI which is used on cloudflare
+
+now express is not used in cloudflare and hence hono come into picture which help us to create route like get post in cloudflare
+Hono is a routing libraray used to craete routing like operation like access to headers body midlewire database etc
