@@ -1,0 +1,1 @@
+Monorepos are used to create folder file structrure inside a project
