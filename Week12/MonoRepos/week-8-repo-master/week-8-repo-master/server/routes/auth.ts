@@ -10,6 +10,7 @@ const signupInput=z.object({
   username:z.string(),
   password:z.string()
 })
+type singupParams=z.infer<typeof signupInput>;
 
 router.post('/signup', async (req, res) => {
     let parsedInput = signupInput.safeParse(req.body)
