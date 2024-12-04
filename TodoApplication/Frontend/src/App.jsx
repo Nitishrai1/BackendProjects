@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import "./App.css";
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import ForgetPassword from "./components/ForgetPassword";
 import ResetFormComponent from "./components/ResetFormComponent";
 import UserProfile from "./components/DashboardSec/UserProfile";
