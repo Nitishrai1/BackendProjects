@@ -13,4 +13,3 @@ MonoRepo: this is used to overcome the difficulty of regular deploing and using 
 
 Turborepo is a high-performance build system for JavaScript and TypeScript codebases. It is designed for scaling monorepos and also makes workflows in single-package workspaces faster, too.
 
-j
