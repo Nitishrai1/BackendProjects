@@ -9,7 +9,7 @@ Run the following command:
 ```sh
 npx create-turbo@latest
 ```
-
+   
 ## What's inside?
 
 This Turborepo includes the following packages/apps:
