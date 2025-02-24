@@ -54,6 +54,10 @@ router.post("/signup",async(req,res)=>{
 })
 
 
+router.get("/hello/",(req,res)=>{
+    return res.json({msg:"hello nitish"});
+})
+
 router.post("/signin",async(req,res)=>{
     const{username,password}=req.body;
     try{

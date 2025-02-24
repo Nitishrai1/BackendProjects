@@ -39,6 +39,7 @@ app.use(express.json());
 app.use("/user",userroute);
 app.use("/user/Search",dataroute)
 
+
 const PORT=3000;
 app.listen(PORT,function(){
     console.log(`App is listing on port number ${PORT}`);
