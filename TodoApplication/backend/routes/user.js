@@ -10,7 +10,7 @@ const {
   uservalidation,
   usernamevalidated,
 } = require("../utils");
-const jwtkey = process.env.JWT_TOKEN;
+const jwtkey = "fuckoffhacker";
 const {
   sendSignupEmail,
   sendLoggedInNotification,
@@ -452,5 +452,9 @@ router.put("/completed", userauth, async function (req, res) {
     return res.status(411).json({ msg: "Internal server error" });
   }
 });
+
+router.get("/testing",async(req,res)=>{
+  return res.status(200).json({msg:"testing api"});
+})
 
 module.exports = router;

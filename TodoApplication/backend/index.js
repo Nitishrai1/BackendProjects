@@ -1,8 +1,8 @@
 const express=require("express");
+const app=express();
 // import { express } from "express";
 // sabse pahle ham yek chat pp ka bhi connection bana lete hai
 const userroute=require("./routes/user")
-const app=express();
 const dataroute=require("./routes/Data")
 require('dotenv').config()
 const {Server}=require("socket.io");
