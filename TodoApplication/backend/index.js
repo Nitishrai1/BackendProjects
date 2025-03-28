@@ -3,6 +3,7 @@ const app=express();
 // import { express } from "express";
 // sabse pahle ham yek chat pp ka bhi connection bana lete hai
 const userroute=require("./routes/user")
+const ratelimit=require("express-rate-limit");
 const dataroute=require("./routes/Data")
 require('dotenv').config()
 const {Server}=require("socket.io");
@@ -35,6 +36,18 @@ app.use(cors())
 
 
 // midle wire
+// the below rate limmiter is for all route set up to 100 req for every 15 min
+const limit=ratelimit({
+    windowMs: 15 * 60 * 1000,
+	max: 100,
+	standardHeaders: 'draft-8', 
+	legacyHeaders: false,
+	
+})
+
+
+
+app.use(limit)
 app.use(express.json());
 app.use("/user",userroute);
 app.use("/user/Search",dataroute)

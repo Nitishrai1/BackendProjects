@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { Router } = require("express");
+const ratelimit=require("express-rate-limit");
 const { User, Notification } = require("../db/");
 const userauth = require("../middlewire/userauthentication");
 const router = Router();
@@ -10,6 +11,22 @@ const {
   uservalidation,
   usernamevalidated,
 } = require("../utils");
+
+const signInLimit=ratelimit({
+  windowMs: 5*50*1000, //5 min
+  max:5,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+})
+
+const paswrodResetLimit=ratelimit({
+  windowMs: 5*50*1000, //5 min
+  max:5,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+
+})
+
 const jwtkey = "fuckoffhacker";
 const {
   sendSignupEmail,
@@ -63,11 +80,14 @@ router.post("/signup", async function (req, res) {
   }
 });
 
-router.post("/signin", async (req, res) => {
+router.post("/signin",signInLimit, async (req, res) => {
   const { email, password } = req.body;
 
+
   try {
-    console.log("in the try block");
+
+    // console.log("in the try block");
+    console.log(`Ip address of the request is ${req.ip}`);
     const user = await User.findOne({ email, password });
     console.log(user);
     if (!user) {
@@ -175,8 +195,10 @@ router.get("/unreadNotification", userauth, async (req, res) => {
 
 router.get("/allNotification", userauth, async (req, res) => {
   const id = req.userId;
+  console.log(`Ip address of the the request is ${req.ip}`)
 
   try {
+
     const user = await Notification.find({
       developerId: id,
     });
@@ -199,6 +221,8 @@ router.get("/todos", userauth, async function (req, res) {
   const id = req.userId;
 
   console.log(`the user id in the get route is ${id}`);
+  console.log(`Ip address of the the request is ${req.ip}`)
+
   try {
     const user = await User.findById({ _id: id });
     if (!user) {
@@ -283,7 +307,7 @@ router.post("/updatePhoto", userauth, async (req, res) => {
   }
 });
 
-router.post("/changepassword", userauth, async (req, res) => {
+router.post("/changepassword",paswrodResetLimit, userauth, async (req, res) => {
   const { newpassword } = req.body;
 
   const id = req.userId;
